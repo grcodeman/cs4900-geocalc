@@ -11,7 +11,7 @@ def index():
     if request.method == 'POST':
         option = request.form['options']
 
-        # Based on useer entered option, call appropriate function
+        # Based on user entered option, call appropriate function
         if option == 'op1':
             point_data = line_seg()
         elif option == 'op2':
