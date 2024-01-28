@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
+    </head>
+    <body>
+        <canvas id="canvas" width="500" height="500" style="border:1px solid black"></canvas>
+
+        <script type="text/javascript" src="{{ url_for('static', filename='js/main.js') }}"></script>
+        <script type="text/javascript">
+            // Collect data passed from render_template
+            var vars = func({{ point_data|tojson }});
+            console.log(vars);
+
+            // Display 2d plane
+            draw_canvas(vars);
+        </script>
+
+    <form action="{{ url_for('index') }}" method="post">
+        <label for="options">Choose a Computational Geometry Function: </label>
+        <select name="options" id="options">
+            <option value="op1">Line Segment Intersection</option>
+            <option value="op2">Closest Pair of Points</option>
+            <option value="op3">Convex Hull</option>
+            <option value="op4">Largest Empty Circle</option>
+        </select>
+        <input type="submit" name="submit" id="submit" value="Submit">
+    </form>
+    <div>
+        <!-- <button type="submit" name="submit_button" value="b1">Line Segment Intersection</button>
+        <button class="button" name="button" value="b1">Line Segment Intersection</button>
+        <button class="button" name="button" value="b2">Closest Pair of Points</button> -->
+    </div>
+    <div>
+        <!-- <button class="button" name="button" value="b3">Convex Hull</button>
+        <button class="button" name="button" value="b4">Largest Empty Circle</button> -->
+    </div>
+
+    </body>
+</html>

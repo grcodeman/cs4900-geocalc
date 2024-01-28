@@ -10,6 +10,9 @@ The initial release, Version 1.0, includes the following capabilities:
 - **Line Segments**: Define a straight line between two distinct points.
 - **Circles**: Represented by a center point and a radius.
 
+## Command to Run Flask Dev Server
+python3 app.py
+
 ## Authors (alphabetically)
 [Ahmed Alabkri](@AhmedAlabkri)  
 [Ali Azimi](@aliazim1)  

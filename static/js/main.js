@@ -1,4 +1,5 @@
-const canvas = document.getElementById("myCanvas");
+/*
+const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 ctx.fillStyle = "#FF0000";
 canvas.height = canvas.width;
@@ -12,6 +13,7 @@ let intercept = 0;
 
 let xArray = [10, 100, 200, 300, 400, 490];
 let yArray = [10, 100, 200, 300, 400, 490];
+
 
 // Plot Line
 ctx.moveTo(0, intercept);
@@ -49,6 +51,47 @@ ctx.closePath();
 ctx.restore();
 
 
+
+const x_arr = '{{ point_data.x }}';
+const y_arr = '{{ point_data.y }}';
+
+ctx.fillStyle = "blue";
+for (let i = 0; i < x_arr.length; i++) {
+    ctx.beginPath();
+    ctx.ellipse(x_arr[i], y_arr[i], 3, 3, 0, 0, MATH.PI * 2);
+    ctx.fill();
+}
+*/
+
 function f(x) {
     return x * slope + intercept;
+}
+
+function func(vars) {
+    return vars
+}
+
+function draw_canvas(vars) {
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+    ctx.fillStyle = "#FF0000";
+    canvas.height = canvas.width;
+    ctx.transform(1, 0, 0, -1, 0, canvas.height);
+
+    let xMax = canvas.height;
+    let yMax = canvas.width;
+
+    // Draw points from vars
+    x_arr = vars.x;
+    y_arr = vars.y;
+
+    console.log(x_arr);
+    console.log(y_arr);
+
+    ctx.fillStyle = "blue";
+    for (let i = 0; i < x_arr.length; i++) {
+        ctx.beginPath();
+        ctx.ellipse(x_arr[i], y_arr[i], 3, 3, 0, 0, Math.PI * 2);
+        ctx.fill();
+    }
 }
