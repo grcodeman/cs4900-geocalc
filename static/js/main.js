@@ -8,10 +8,6 @@ function draw_canvas(points, lines, circles) {
     const ctx = canvas.getContext("2d");
     ctx.fillStyle = "#FF0000";
     canvas.height = canvas.width;
-    ctx.transform(1, 0, 0, -1, 0, canvas.height);
-
-    let xMax = canvas.height;
-    let yMax = canvas.width;
 
     // Draw lines
     var start_x_arr = lines.start_x;
@@ -19,25 +15,11 @@ function draw_canvas(points, lines, circles) {
     var end_x_arr = lines.end_x;
     var end_y_arr = lines.end_y;
 
+    ctx.strokeStyle = "black";
     for (let i = 0; i < start_x_arr.length; i++) {
         ctx.moveTo(start_x_arr[i], start_y_arr[i]);
         ctx.lineTo(end_x_arr[i], end_y_arr[i]);
-        ctx.strokeStyle = "black";
         ctx.stroke();
-    }
-
-    // Draw points
-    var x_arr = points.x;
-    var y_arr = points.y;
-
-    console.log(x_arr);
-    console.log(y_arr);
-
-    ctx.fillStyle = "blue";
-    for (let i = 0; i < x_arr.length; i++) {
-        ctx.beginPath();
-        ctx.ellipse(x_arr[i], y_arr[i], 3, 3, 0, 0, Math.PI * 2);
-        ctx.fill();
     }
 
     // Draw circles
@@ -49,6 +31,17 @@ function draw_canvas(points, lines, circles) {
     for (let i = 0; i < center_x_arr.length; i++) {
         ctx.beginPath();
         ctx.ellipse(center_x_arr[i], center_y_arr[i], radius_arr[i], radius_arr[i], 0, 0, Math.PI * 2);
+        ctx.fill();
+    }
+
+    // Draw points
+    var x_arr = points.x;
+    var y_arr = points.y;
+
+    ctx.fillStyle = "blue";
+    for (let i = 0; i < x_arr.length; i++) {
+        ctx.beginPath();
+        ctx.ellipse(x_arr[i], y_arr[i], 3, 3, 0, 0, Math.PI * 2);
         ctx.fill();
     }
 }
