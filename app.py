@@ -22,16 +22,14 @@ def index():
             point_data = largest_circle()
         else:
             print('invalid option')
+            point_data = {}
 
         return render_template('index.html', point_data=point_data)
     else:
-        # Put points into json format
-        point_data = {
-            "x": 0,
-            "y": 0,
-        }
+        point_data = {}
 
         return render_template('index.html', point_data=point_data)
+
 
 def line_seg():
     print('line seg')
@@ -45,7 +43,6 @@ def line_seg():
     }
 
     return point_data
-
 
 
 def closest_pair():
@@ -88,8 +85,8 @@ def largest_circle():
     }
 
     return point_data
+ 
     
-
 # Function returns x random points
 def random_points(x):
     # Create x random points
