@@ -9,11 +9,15 @@
         <script type="text/javascript" src="{{ url_for('static', filename='js/main.js') }}"></script>
         <script type="text/javascript">
             // Collect data passed from render_template
-            var vars = func({{ point_data|tojson }});
-            console.log(vars);
+            var points = func({{ point_data|tojson }});
+            var lines = func({{ line_data|tojson }});
+            var circles = func({{ circle_data|tojson }});
+            console.log(points);
+            console.log(lines);
+            console.log(circles);
 
-            // Display 2d plane
-            draw_canvas(vars);
+            // Display 2d plane with given data
+            draw_canvas(points, lines, circles);
         </script>
 
         <form action="{{ url_for('index') }}" method="post">

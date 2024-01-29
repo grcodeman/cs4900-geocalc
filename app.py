@@ -1,5 +1,7 @@
 from flask import Flask, render_template, request, redirect
 from backend.point import Point
+from backend.line import Line
+from backend.circle import Circle
 
 import random
 
@@ -8,27 +10,36 @@ app = Flask(__name__)
 # Main Index Page
 @app.route('/', methods=['POST', "GET"])
 def index():
+
+    point_data = {}
+    line_data = {}
+    circle_data = {}
+
     if request.method == 'POST':
         option = request.form['options']
 
         # Based on user entered option, call appropriate function
         if option == 'op1':
-            point_data = line_seg()
+            point_data, line_data, circle_data = line_seg()
         elif option == 'op2':
-            point_data = closest_pair()
+            point_data, line_data, circle_data = closest_pair()
         elif option == 'op3':
-            point_data = convex_hull()
+            point_data, line_data, circle_data = convex_hull()
         elif option == 'op4':
-            point_data = largest_circle()
+            point_data, line_data, circle_data = largest_circle()
         else:
             print('invalid option')
-            point_data = {}
 
-        return render_template('index.html', point_data=point_data)
+
+        return render_template('index.html', point_data=point_data,
+                                             line_data=line_data,
+                                             circle_data=circle_data,)
     else:
-        point_data = {}
 
-        return render_template('index.html', point_data=point_data)
+
+        return render_template('index.html', point_data=point_data,
+                                             line_data=line_data,
+                                             circle_data=circle_data,)
 
 
 def line_seg():
@@ -36,13 +47,36 @@ def line_seg():
 
     points = random_points(50)
 
-    # Put points into json format
+    lines = [Line(Point(random.randint(10, 490), random.randint(10, 490)),
+                  Point(random.randint(10, 490), random.randint(10, 490))), 
+             Line(Point(random.randint(10, 490), random.randint(10, 490)),
+                  Point(random.randint(10, 490), random.randint(10, 490))),]
+    
+    circles = [Circle(Point(random.randint(10, 490), random.randint(10, 490)),
+                      random.randint(50, 100)),
+               Circle(Point(random.randint(10, 490), random.randint(10, 490)),
+                      random.randint(50, 100)),]
+
+    # Put point, line, and circle data into json format
     point_data = {
         "x": [point.x for point in points],
         "y": [point.y for point in points],
     }
 
-    return point_data
+    line_data = {
+        "start_x": [line.start.x for line in lines],
+        "start_y": [line.start.y for line in lines],
+        "end_x": [line.end.x for line in lines],
+        "end_y": [line.end.y for line in lines],
+    }
+
+    circle_data = {
+        "x": [circle.center.x for circle in circles],
+        "y": [circle.center.y for circle in circles],
+        "radius": [circle.radius for circle in circles],
+    }
+
+    return point_data, line_data, circle_data
 
 
 def closest_pair():
@@ -50,13 +84,36 @@ def closest_pair():
 
     points = random_points(50)
 
-    # Put points into json format
+    lines = [Line(Point(random.randint(10, 490), random.randint(10, 490)),
+                  Point(random.randint(10, 490), random.randint(10, 490))), 
+             Line(Point(random.randint(10, 490), random.randint(10, 490)),
+                  Point(random.randint(10, 490), random.randint(10, 490))),]
+    
+    circles = [Circle(Point(random.randint(10, 490), random.randint(10, 490)),
+                      random.randint(50, 100)),
+               Circle(Point(random.randint(10, 490), random.randint(10, 490)),
+                      random.randint(50, 100)),]
+
+    # Put point, line, and circle data into json format
     point_data = {
         "x": [point.x for point in points],
         "y": [point.y for point in points],
     }
 
-    return point_data
+    line_data = {
+        "start_x": [line.start.x for line in lines],
+        "start_y": [line.start.y for line in lines],
+        "end_x": [line.end.x for line in lines],
+        "end_y": [line.end.y for line in lines],
+    }
+
+    circle_data = {
+        "x": [circle.center.x for circle in circles],
+        "y": [circle.center.y for circle in circles],
+        "radius": [circle.radius for circle in circles],
+    }
+
+    return point_data, line_data, circle_data
 
 
 def convex_hull():
@@ -64,27 +121,72 @@ def convex_hull():
 
     points = random_points(50)
 
-    # Put points into json format
+    lines = [Line(Point(random.randint(10, 490), random.randint(10, 490)),
+                  Point(random.randint(10, 490), random.randint(10, 490))), 
+             Line(Point(random.randint(10, 490), random.randint(10, 490)),
+                  Point(random.randint(10, 490), random.randint(10, 490))),]
+    
+    circles = [Circle(Point(random.randint(10, 490), random.randint(10, 490)),
+                      random.randint(50, 100)),
+               Circle(Point(random.randint(10, 490), random.randint(10, 490)),
+                      random.randint(50, 100)),]
+
+    # Put point, line, and circle data into json format
     point_data = {
         "x": [point.x for point in points],
         "y": [point.y for point in points],
     }
 
-    return point_data
+    line_data = {
+        "start_x": [line.start.x for line in lines],
+        "start_y": [line.start.y for line in lines],
+        "end_x": [line.end.x for line in lines],
+        "end_y": [line.end.y for line in lines],
+    }
 
+    circle_data = {
+        "x": [circle.center.x for circle in circles],
+        "y": [circle.center.y for circle in circles],
+        "radius": [circle.radius for circle in circles],
+    }
+
+    return point_data, line_data, circle_data
 
 def largest_circle():
     print('largest circle')
 
     points = random_points(50)
 
-    # Put points into json format
+    lines = [Line(Point(random.randint(10, 490), random.randint(10, 490)),
+                  Point(random.randint(10, 490), random.randint(10, 490))), 
+             Line(Point(random.randint(10, 490), random.randint(10, 490)),
+                  Point(random.randint(10, 490), random.randint(10, 490))),]
+    
+    circles = [Circle(Point(random.randint(10, 490), random.randint(10, 490)),
+                      random.randint(50, 100)),
+               Circle(Point(random.randint(10, 490), random.randint(10, 490)),
+                      random.randint(50, 100)),]
+
+    # Put point, line, and circle data into json format
     point_data = {
         "x": [point.x for point in points],
         "y": [point.y for point in points],
     }
 
-    return point_data
+    line_data = {
+        "start_x": [line.start.x for line in lines],
+        "start_y": [line.start.y for line in lines],
+        "end_x": [line.end.x for line in lines],
+        "end_y": [line.end.y for line in lines],
+    }
+
+    circle_data = {
+        "x": [circle.center.x for circle in circles],
+        "y": [circle.center.y for circle in circles],
+        "radius": [circle.radius for circle in circles],
+    }
+
+    return point_data, line_data, circle_data
  
     
 # Function returns x random points
