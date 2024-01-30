@@ -1,7 +1,13 @@
 from flask import Flask, render_template, request, redirect
+
 from backend.point import Point
 from backend.line import Line
 from backend.circle import Circle
+
+from backend.line_seg import Line_Seg
+from backend.closest_pair import Closest_Pair
+from backend.convex_hull import Convex_Hull
+from backend.largest_circle import Largest_Circle
 
 import random
 
@@ -39,7 +45,7 @@ def index():
 
 
 def line_seg():
-    print('line seg')
+    Line_Seg.test()
 
     # Generate random point, line, and circle data
     points, lines, circles = random_data()
@@ -51,7 +57,7 @@ def line_seg():
 
 
 def closest_pair():
-    print('closest pair')
+    Closest_Pair.test()
 
     # Generate random point, line, and circle data
     points, lines, circles = random_data()
@@ -63,7 +69,7 @@ def closest_pair():
 
 
 def convex_hull():
-    print('convex hull')
+    Convex_Hull.test()
 
     # Generate random point, line, and circle data
     points, lines, circles = random_data()
@@ -75,7 +81,7 @@ def convex_hull():
 
 
 def largest_circle():
-    print('largest circle')
+    Largest_Circle.test()
 
     # Generate random point, line, and circle data
     points, lines, circles = random_data()
