@@ -1,0 +1,32 @@
+/* Set the background of the entire page to light grey */
+body {
+    background-color: #f0f0f0;
+}
+
+/* Style the submit button */
+input[type="submit"] {
+    background-color: #007bff;
+    border: none;
+    color: white;
+    padding: 5px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+/* Style the select element */
+select {
+    border: 1px solid #ccc;
+    padding: 5px 10px;
+    border-radius: 4px;
+    background-color: white;
+}
+
+/* Style the canvas element */
+canvas {
+    background-color: white;
+    border: 2px solid #8b4513;
+}
