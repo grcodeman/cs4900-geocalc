@@ -80,10 +80,23 @@ def closest_pair(points):
 
 
 def convex_hull(points):
-    Convex_Hull.test()
+    # Convert Class point values into array values
+    point_arr = []
+    for point in points:
+        point_arr.append([point.x, point.y])
 
-    # Generate random point, line, and circle data
-    lines, circles = random_data()
+    # Initialize Convex_Hull and do a graham scan on all points
+    ch = Convex_Hull()
+    hull = ch.graham_scan(point_arr)
+
+    # Create Lines based on graham scan's hull values
+    lines = []
+    for i in range(len(hull)-1):
+        line = Line(Point(hull[i][0], hull[i][1]),
+                    Point(hull[i+1][0], hull[i+1][1]))
+        lines.append(line)
+
+    circles = []
 
     # Put point, line, and circle data into json format
     point_data, line_data, circle_data = data_into_json(points, lines, circles)
