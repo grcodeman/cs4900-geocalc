@@ -63,3 +63,7 @@ if lsi.do_intersect(*segment1, *segment2):
     print("Segments intersect")
 else:
     print("Segments do not intersect")
+
+
+# This solution is inspired by Geeksforgeeks solution : 
+# https://www.geeksforgeeks.org/check-if-two-given-line-segments-intersect/
