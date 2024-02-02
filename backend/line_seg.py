@@ -49,20 +49,6 @@ class LineSegmentIntersection(Algorithms):
         # Otherwise ret false
         return False
 
-# Usage Example:
-lsi = LineSegmentIntersection()
-lsi.add_point(Point(1, 1))
-lsi.add_point(Point(10, 10))
-lsi.add_point(Point(1, 10))
-lsi.add_point(Point(10, 1))
-
-segment1 = (lsi.points[0], lsi.points[1])
-segment2 = (lsi.points[2], lsi.points[3])
-
-if lsi.do_intersect(*segment1, *segment2):
-    print("Segments intersect")
-else:
-    print("Segments do not intersect")
 
 
 # This solution is inspired by Geeksforgeeks solution : 
