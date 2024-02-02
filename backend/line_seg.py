@@ -1,4 +1,4 @@
-from Algorithms import Algorithms
+from algorithm import Algorithms
 from point import Point
 import numpy as np
 class LineSegmentIntersection(Algorithms):

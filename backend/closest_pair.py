@@ -1,7 +1,7 @@
 import math
 import numpy as np
 
-from Algorithms import Algorithms
+from algorithm import Algorithms
 from point import Point
 
 
