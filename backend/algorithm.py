@@ -1,6 +1,7 @@
 import numpy as np
 from point import Point
 
+
 class Algorithms:
     def __init__(self):
         # Initialize an empty array for storing points
@@ -11,7 +12,7 @@ class Algorithms:
         self.points = np.append(self.points, point)
 
     def remove_point(self, point):
-        # Remove a point 
+        # Remove a point
         self.points = self.points[self.points != point]
 
     def clear_points(self):
