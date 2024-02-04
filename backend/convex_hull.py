@@ -7,7 +7,7 @@ class Convex_Hull:
         pass
 
     def test():
-       pass
+        pass
 
     def orientation(self, a, b, c):
         # determining the orienatation of the the points
@@ -42,4 +42,3 @@ class Convex_Hull:
         # add the pivot point back to array to come back to starting point & make a loop
         hull.append(pivot)
         return hull
-    
