@@ -1,11 +1,8 @@
-from backend.algorithm import Algorithm
-
-
 class Console:
     def __init__(self) -> None:
         self.prompt = 'geocalc1.0> '
-        # Instantiate the algorithm class.
-        self.algorithm = Algorithm()
+        # Initialize an empty array for storing points.
+        self.points = []
 
     def run(self) -> None:
         while True:
@@ -35,10 +32,10 @@ class Console:
         try:
             # Assuming the command format is "add_point x y"
             _, x, y = command.split()
-            # Convert strings to floats and create a tuple.
-            point = (float(x), float(y))
-            # Add the point to the list.
-            self.algorithm.add_point(point)
+            # Convert strings to integers and create an array.
+            point = [int(x), int(y)]
+            # Add the point to the points array.
+            self.points.append(point)
             # Print a success message in green.
             print("\033[92m" + f"Point {point} added." + "\033[0m")
         except ValueError:
@@ -53,12 +50,18 @@ class Console:
         try:
             # Assuming the command format is "remove_point x y"
             _, x, y = command.split()
-            # Convert strings to floats and create a tuple.
-            point = (float(x), float(y))
-            # Remove the point from the list.
-            self.algorithm.remove_point(point)
-            # Print a success message in green.
-            print("\033[92m" + f"Point {point} removed." + "\033[0m")
+            # Convert strings to integers and create an array.
+            point = [int(x), int(y)]
+            try:
+                # Find the index of the point in points array.
+                index = self.points.index(point)
+                # Remove the point from the points array.
+                del self.points[index]
+                # Print a success message in green.
+                print("\033[92m" + f"Point {point} removed." + "\033[0m")
+            except ValueError:
+                # Print an error in red.
+                print("\033[91m" + f"Point entered does not exist." + "\033[0m")
         except ValueError:
             # Print an error in yellow.
             print("\033[93m" + "Invalid point format. Usage: remove_point x y"
@@ -66,15 +69,19 @@ class Console:
         except Exception as e:
             # Print an error in red.
             print("\033[91m" + f"Error removing point: {e}" + "\033[0m")
-    
+        
     def handle_clear_points(self, command) -> None:
         try:
             # Assuming the command format is "clear_points"
             _, = command.split()
             # Clear the list of points.
-            self.algorithm.clear_points()
+            self.points = []
             # Print a success message in green.
             print("\033[92m" + "Points cleared." + "\033[0m")
         except Exception as e:
             # Print an error in red.
             print("\033[91m" + f"Error clearing points: {e}" + "\033[0m")
+
+
+console = Console()
+console.run()
