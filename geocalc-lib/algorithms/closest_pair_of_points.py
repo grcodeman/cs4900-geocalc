@@ -1,6 +1,8 @@
 # This solution is inspired by Geeksforgeeks solution :
 # https://www.geeksforgeeks.org/closest-pair-of-points-using-divide-and-conquer-algorithm/#
 
+from shapes.point import Point
+
 # Thirty party imports.
 import numpy as np
 
@@ -63,20 +65,23 @@ class ClosestPairOfPoints:
 
         min_dist = float("inf")
         n = len(points)
+        min_pair = None
         for i in range(n):
             for j in range(i+1, n):
                 dist_ij = self.dist(points[i], points[j])
                 if dist_ij < min_dist:
                     min_dist = dist_ij
-        return min_dist
+                    min_pair = (points[i],points[j])
+        return min_dist, min_pair
 
-    def strip_closest(self, strip, d) -> float:
+    def strip_closest(self, strip, d, best_pair) -> float:
         """
         Given a list of points, find if the min distance is among this
         list.
         """
 
         min_dist = d
+        min_pair = best_pair
         # Number of points in the strip.
         size = len(strip)
         # Sort the list according to the y-axis.
@@ -95,8 +100,9 @@ class ClosestPairOfPoints:
                 # with it.
                 if dist_ij < min_dist:
                     min_dist = dist_ij
+                    min_pair = (strip[i], strip[j])
 
-        return min_dist
+        return min_dist, min_pair
 
     def closest_util(self, points, sort_x=True) -> float:
         """
@@ -117,15 +123,16 @@ class ClosestPairOfPoints:
         # halve.
         mid = n // 2
         midPoint = points[mid]
-        dl = self.closest_util(points[:mid], sort_x=False)
-        dr = self.closest_util(points[mid:], sort_x=False)
+        dl, pair_left = self.closest_util(points[:mid], sort_x=False)
+        dr, pair_right = self.closest_util(points[mid:], sort_x=False)
 
         # Assign the minimum halve to d.
         if dl < dr:
             d = dl
+            best_pair = pair_left
         else:
             d = dr
-
+            best_pair = pair_right
         # Initialize an empty list for points within the strip.
         strip = []
         # Iterate through each point.
@@ -139,13 +146,13 @@ class ClosestPairOfPoints:
 
         # Find the closest distance within the strip using strip
         # closest function.
-        strip_dist = self.strip_closest(strip, d)
+        strip_dist, strip_pair = self.strip_closest(strip, d, best_pair)
         # Check if the closest distance within the strip is less than
         # the minimum distance found so far.
         if strip_dist < d:
             # If yes, return the closest distance within the strip.
-            return strip_dist
+            return strip_dist, strip_pair
         else:
             # Otherwise, return the minimum distance found in the
             # divided sections.
-            return d  
+            return d, best_pair  
