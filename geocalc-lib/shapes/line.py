@@ -50,7 +50,7 @@ class Line:
 
     def is_parallel_to(self, other: 'Line') -> bool:
         """Checks if this line is parallel to another line."""
-        
+
         return self.slope() == other.slope()
 
     def __str__(self) -> str:

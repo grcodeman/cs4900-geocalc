@@ -1,9 +1,9 @@
 # Standard library imports.
 from __future__ import annotations
+from math import pi
 
 # Personal imports.
 from point import Point
-from math import pi
 
 
 class Circle:
