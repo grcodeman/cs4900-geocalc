@@ -55,7 +55,6 @@ class Console:
             try:
                 # Find the index of the point in points array.
                 index = self.points.index(point)
-                print(index)
                 # Remove the point from the points array.
                 del self.points[index]
                 # Print a success message in green.
