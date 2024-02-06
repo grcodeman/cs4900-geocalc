@@ -1,5 +1,6 @@
 import numpy as np
 from scipy.spatial import Delaunay
+import unittest
 
 
 class LargestEmptyCircle:
@@ -27,3 +28,28 @@ class LargestEmptyCircle:
                 best_circle = (center, radius)
 
         return best_circle
+
+
+class TestLargestEmptyCircle(unittest.TestCase):
+    def test_largest_empty_circle(self):
+        points = np.array([
+            [0, 0],
+            [0, 1],
+            [1, 0],
+            [1, 1]
+        ])
+        
+        # Instantiate the LargestEmptyCircle class with the points.
+        lec = LargestEmptyCircle(points)
+        
+        # Find the largest empty circle.
+        center, radius = lec.find_largest_empty_circle()
+        
+        # Expected center and radius for the largest empty circle in the square.
+        expected_center = np.array([0.5, 0.5])
+        expected_radius = np.sqrt(2) / 2
+        
+        # Check if the found center and radius are close to the expected values.
+        self.assertTrue(np.allclose(center, expected_center), "The center of the largest empty circle is incorrect.")
+        self.assertAlmostEqual(radius, expected_radius, places=5, 
+                               msg="The radius of the largest empty circle is incorrect.")
