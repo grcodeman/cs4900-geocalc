@@ -70,8 +70,8 @@ class Console:
         Performs the largest empty circle algorithm
         on the points in the points array.
     handle_line_segment(command)
-        Performs the line segment intersection algorithm on each line pair
-        to determine if the intersect.
+        Performs the line segment intersection algorithm
+        on each line pair to determine if the intersect.
 
     Usage
     -----
@@ -166,7 +166,8 @@ class Console:
         try:
             # Assuming the command format is "add_point x y"
             _, x, y = command.split()
-            # Convert strings to integers and create a Point class variable.
+            # Convert strings to integers 
+            # and create a Point class variable.
             point = Point(int(x), int(y))
             # Add the point to the points array.
             self.points.append(point)
@@ -184,7 +185,8 @@ class Console:
         try:
             # Assuming the command format is "remove_point x y"
             _, x, y = command.split()
-            # Convert strings to integers and create a Point class variable
+            # Convert strings to integers 
+            # and create a Point class variable
             point = Point(int(x), int(y))
             try:
                 # Find the index of the point in points array.
