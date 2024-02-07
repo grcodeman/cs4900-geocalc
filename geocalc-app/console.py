@@ -203,7 +203,6 @@ class Console:
             # Call ConvexHull algorithm and perform a graham scan
             convex_hull_finder = ConvexHull(points)
             convex_hull = convex_hull_finder.graham_scan(points)
-            print(convex_hull)
             #Print a success message in green displaying convex hull information
             print("\033[92m" + "Convex Hull Points:" + "\033[0m")
             for point in convex_hull:
