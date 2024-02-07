@@ -268,6 +268,13 @@ class Console:
             print("\033[91m" + f"Error clearing Lines: {e}" + "\033[0m")
 
     def handle_closest_pair(self, command) -> None:
+        # Check if there aren't enough points to run the algorithm.
+        if len(self.points) < 2:
+            # Display a warning message in red and return
+            print("\033[91m" + f"Not enough points."
+                  + f" Add points with command 'add_point x y'" + "\033[0m")
+            return
+        
         try:
             # Assuming command format is "closest_pair_of_points"
             _, = command.split()
@@ -285,6 +292,13 @@ class Console:
             print("\033[91m" + f"Error finding closest pair: {e}" + "\033[0m")
 
     def handle_convex_hull(self, command) -> None:
+        # Check if there aren't enough points to run the algorithm.
+        if len(self.points) < 3:
+            # Display a warning message in red and return
+            print("\033[91m" + f"Not enough points."
+                  + f" Add points with command 'add_point x y'" + "\033[0m")
+            return
+        
         try:
             # Assuming command format is "convex_hull"
             _, = command.split()
@@ -294,7 +308,7 @@ class Console:
             convex_hull_finder = ConvexHull(points)
             convex_hull = convex_hull_finder.graham_scan(points)
             # Print a success message in green displaying convex hull information
-            print("\033[92m" + "Convex Hull Points:" + "\033[0m")
+            print("\033[92m" + "Convex Hull Shape:" + "\033[0m")
             for point in convex_hull:
                 print("\033[92m" + f"({point[0]}, {point[1]})" + "\033[0m")
         except Exception as e:
@@ -302,6 +316,13 @@ class Console:
             print("\033[91m" + f"Error finding convex hull: {e}" + "\033[0m")
 
     def handle_largest_circle(self, command) -> None:
+        # Check if there aren't enough points to run the algorithm.
+        if len(self.points) < 2:
+            # Display a warning message in red and return
+            print("\033[91m" + f"Not enough points."
+                  + f" Add points with command 'add_point x y'" + "\033[0m")
+            return
+        
         try:
             # Assuming command format is "largest_empty_circle"
             _, = command.split()
@@ -322,6 +343,13 @@ class Console:
             print("\033[91m" + f"Error finding largest empty circle: {e}" + "\033[0m")
     
     def handle_line_segment(self, command) -> None:
+        # Check if there aren't enough lines to run the algorithm.
+        if len(self.lines) < 2:
+            # Display a warning message in red and return
+            print("\033[91m" + f"Not enough lines."
+                  + f" Add lines with command 'add_line x1 y1 x2 y2'" + "\033[0m")
+            return
+
         try:
             # Assuming command format is "line_segment"
             _, = command.split()
