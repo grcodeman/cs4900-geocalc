@@ -1,6 +1,3 @@
-# Standard library imports.
-from math import sqrt
-
 # Personal imports.
 from point import Point
 
