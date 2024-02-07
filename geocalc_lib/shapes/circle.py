@@ -3,7 +3,7 @@ from __future__ import annotations
 from math import pi
 
 # Personal imports.
-from point import Point
+from .point import Point
 
 
 class Circle:
