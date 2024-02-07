@@ -1,15 +1,29 @@
+# Standard library imports.
+import os
+import random
+import sys
+
+# Third-party imports.
 from flask import Flask, render_template, request
 
-from backend.point import Point
-from backend.line import Line
-from backend.circle import Circle
+# Personal imports.
+# If this were to be published, this would simply reference the package
+# on PyPI. However, because this is a local package, we need to add the
+# path to the system path.
 
-from backend.line_seg import Line_Seg
-from backend.closest_pair import Closest_Pair
-from backend.convex_hull import Convex_Hull
-from backend.largest_circle import Largest_Circle
+# Get the absolute path of the geocalc-app directory
+app_directory = os.path.dirname(os.path.abspath(__file__))
 
-import random
+# Get the path of the parent directory of geocalc-app and geocalc-lib
+parent_directory = os.path.dirname(app_directory)
+
+# Add the parent directory to sys.path to access geocalc-lib
+sys.path.append(parent_directory)
+
+# Now you should be able to import modules from geocalc-lib
+from geocalc_lib.algorithms import *
+from geocalc_lib.shapes.circle import *
+
 
 app = Flask(__name__)
 
