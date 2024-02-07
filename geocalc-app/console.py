@@ -23,6 +23,7 @@ from geocalc_lib.shapes.point import Point
 from geocalc_lib.shapes.line import Line
 
 from geocalc_lib.algorithms.closest_pair_of_points import ClosestPairOfPoints
+
 from geocalc_lib.algorithms.convex_hull import ConvexHull
 from geocalc_lib.algorithms.largest_empty_circle import LargestEmptyCircle
 from geocalc_lib.algorithms.line_segment import LineSegmentIntersection
@@ -45,7 +46,8 @@ class Console:
     -------
     run()
         This method will run the command line ui,
-        asking the user for input commands until they enter 'exit' or 'quit'.
+        asking the user for input commands until
+        they enter 'exit' or 'quit'.
     handle_add_point(command)
         This method will add the given point to the points array.
     handle_remove_point(command)
@@ -62,7 +64,8 @@ class Console:
         Performs the closest pair of points algorithm
         on the points in the points array.
     handle_convex_hull(command)
-        Performs the convex hull algorithm on the points in the points array.
+        Performs the convex hull algorithm 
+        on the points in the points array.
     handle_largest_circle(command)
         Performs the largest empty circle algorithm
         on the points in the points array.
@@ -283,9 +286,10 @@ class Console:
             closest_pair_finder = ClosestPairOfPoints(np_points)
             min_distance, best_pair = closest_pair_finder.closest_util(np_points)
             # Print a success message in green displaying algorithm information
-            print("\033[92m" + f"({best_pair[0].coords[0]}, {best_pair[0].coords[1]}) " 
+            print("\033[92m" + f"({best_pair[0].coords[0]}, {best_pair[0].coords[1]}) "
                   + f"and ({best_pair[1].coords[0]}, {best_pair[1].coords[1]}) "
-                  + f"are the closest pair of points with a distance of {min_distance:.3f}."
+                  + f"are the closest pair of points with"
+                  + f" a distance of {min_distance:.3f}."
                   + "\033[0m")
         except Exception as e:
             # Print an error in red.
@@ -327,17 +331,22 @@ class Console:
             # Assuming command format is "largest_empty_circle"
             _, = command.split()
             # Turn points into np.array of array point values
-            np_points = np.array([[point.coords[0], point.coords[1]] for point in self.points])
+            np_points = np.array([[point.coords[0], point.coords[1]]
+                                 for point in self.points])
             print(np_points)
             # Call LargestEmptyCircle algorithm
             lec = LargestEmptyCircle(np_points)
             result = lec.find_largest_empty_circle()
             print(result)
+            
             """
-            # Print a success message in green displaying largest empty circle information
-            print("\033[92m" + f"Largest empty circle has a center of {center} and radius of {radius}."
+            # Print a success message in green 
+            # displaying algorithm information
+            print("\033[92m" + f"Largest empty circle has a"
+                  + f"center of {center} and radius of {radius}."
                   + "\033[0m")
             """
+            
         except Exception as e:
             # Print an error in red.
             print("\033[91m" + f"Error finding largest empty circle: {e}" + "\033[0m")
@@ -370,14 +379,19 @@ class Console:
             # For each line_pair, display whether they intersected or not
             for i in range(len(line_pairs)):
                 result = "intersect" if results[i] == True else "do not intersect"
-                print("\033[92m" + f"[({line_pairs[i][0].start.coords[0]}, {line_pairs[i][0].start.coords[1]}),"
-                      + f" ({line_pairs[i][0].end.coords[0]}, {line_pairs[i][0].end.coords[1]})]"
-                      + f" and [({line_pairs[i][1].start.coords[0]}, {line_pairs[i][1].start.coords[1]}),"
-                      + f" ({line_pairs[i][1].end.coords[0]}, {line_pairs[i][1].end.coords[1]})] {result}."
+                print("\033[92m" + f"[({line_pairs[i][0].start.coords[0]}, "
+                      + f"{line_pairs[i][0].start.coords[1]}),"
+                      + f" ({line_pairs[i][0].end.coords[0]},"
+                      + f" {line_pairs[i][0].end.coords[1]})]"
+                      + f" and [({line_pairs[i][1].start.coords[0]},"
+                      + f" {line_pairs[i][1].start.coords[1]}),"
+                      + f" ({line_pairs[i][1].end.coords[0]},"
+                      + f" {line_pairs[i][1].end.coords[1]})] {result}."
                       + "\033[0m")
         except Exception as e:
             # Print an error in red.
-            print("\033[91m" + f"Error finding line segment intersection: {e}" + "\033[0m")\
+            print("\033[91m" + f"Error finding line segment intersection: {e}"
+                  + "\033[0m")
 
 
 console = Console()
