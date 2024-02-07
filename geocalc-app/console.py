@@ -61,6 +61,8 @@ class Console:
                     self.handle_convex_hull(command)
                 elif command.startswith("largest_empty_circle"):
                     self.handle_largest_circle(command)
+                elif command.startswith("line_segment"):
+                    self.handle_line_segment(command)
                 else:
                     # Print user error in yellow.
                     print("\033[93m" + "Unknown command." + "\033[0m")
@@ -232,6 +234,36 @@ class Console:
         except Exception as e:
             # Print an error in red.
             print("\033[91m" + f"Error finding largest empty circle: {e}" + "\033[0m")
+    
+    def handle_line_segment(self, command) -> None:
+        try:
+            # Assuming command format is "line_segment"
+            _, = command.split()
+            # Get each pair of lines
+            line_pairs = []
+            for i, line1 in enumerate(self.lines):
+                for line2 in self.lines[i + 1:]:
+                    line_pairs.append([line1, line2])
+            # For each pair of lines, call LineSegmentIntersection algorithm
+            lsi = LineSegmentIntersection(np.array(self.points))
+            results = []
+            for pair in line_pairs:
+                result = lsi.do_intersect(pair[0].start, pair[0].end, 
+                                          pair[1].start, pair[1].end)
+                results.append(result)
+            # Print a success message in green displaying line segment information
+            print("\033[92m" + f"Line Segment Intersections:"+ "\033[0m")
+            # For each line_pair, display whether they intersected or not
+            for i in range(len(line_pairs)):
+                result = "intersect" if results[i] == True else "do not intersect"
+                print("\033[92m" + f"[({line_pairs[i][0].start.coords[0]}, {line_pairs[i][0].start.coords[1]}),"
+                      + f" ({line_pairs[i][0].end.coords[0]}, {line_pairs[i][0].end.coords[1]})]"
+                      + f" and [({line_pairs[i][1].start.coords[0]}, {line_pairs[i][1].start.coords[1]}),"
+                      + f" ({line_pairs[i][1].end.coords[0]}, {line_pairs[i][1].end.coords[1]})] {result}."
+                      + "\033[0m")
+        except Exception as e:
+            # Print an error in red.
+            print("\033[91m" + f"Error finding line segment intersection: {e}" + "\033[0m")\
 
 
 console = Console()
