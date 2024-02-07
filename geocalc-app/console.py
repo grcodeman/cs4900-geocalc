@@ -57,6 +57,8 @@ class Console:
                     self.handle_clear_lines(command)
                 elif command.startswith('closest_pair_of_points'):
                     self.handle_closest_pair(command)
+                elif command.startswith('convex_hull'):
+                    self.handle_convex_hull(command)
                 else:
                     # Print user error in yellow.
                     print("\033[93m" + "Unknown command." + "\033[0m")
@@ -179,18 +181,36 @@ class Console:
         try:
             # Assuming command format is "closest_pair_of_points"
             _, = command.split()
-            # Turn points into an np.array and call ClosestPairOfPoints Algorithm 
+            # Turn points into an np.array and call ClosestPairOfPoints algorithm 
             np_points = np.array(self.points)
             closest_pair_finder = ClosestPairOfPoints(np_points)
             min_distance, best_pair = closest_pair_finder.closest_util(np_points)
             # Print a success message in green displaying algorithm information
             print("\033[92m" + f"({best_pair[0].coords[0]}, {best_pair[0].coords[1]}) " 
-                  + f"({best_pair[1].coords[0]}, {best_pair[1].coords[1]}) "
+                  + f"and ({best_pair[1].coords[0]}, {best_pair[1].coords[1]}) "
                   + f"are the closest pair of points with a distance of {min_distance:.3f}."
                   + "\033[0m")
         except Exception as e:
             # Print an error in red.
             print("\033[91m" + f"Error finding closest pair: {e}" + "\033[0m")
+
+    def handle_convex_hull(self, command) -> None:
+        try:
+            # Assuming command format is "convex_hull"
+            _, = command.split()
+            # Turn points into array of tuples
+            points = [(point.coords[0], point.coords[1]) for point in self.points]
+            # Call ConvexHull algorithm and perform a graham scan
+            convex_hull_finder = ConvexHull(points)
+            convex_hull = convex_hull_finder.graham_scan(points)
+            print(convex_hull)
+            #Print a success message in green displaying convex hull information
+            print("\033[92m" + "Convex Hull Points:" + "\033[0m")
+            for point in convex_hull:
+                print("\033[92m" + f"({point[0]}, {point[1]})" + "\033[0m")
+        except Exception as e:
+            # Print an error in red.
+            print("\033[91m" + f"Error finding convex hull: {e}" + "\033[0m")
 
 
 console = Console()
