@@ -23,8 +23,8 @@ As well as the following computational capabilities:
 To be documented.
 
 ## Authors (alphabetically)
-[Ahmed Alabkri](@AhmedAlabkri)  
-[Ali Azimi](@aliazim1)  
+[Ahmed Alabkri](https://github.com/AhmedAlabkri)  
+[Ali Azimi](https://github.com/aliazim1)  
 [Matthew Schaney](https://github.com/matthewschaney)  
-[Sam Selesky](@samselesky)  
-[Cody Thornell](@grcodeman)  
+[Sam Selesky](https://github.com/samselesky)  
+[Cody Thornell](https://github.com/grcodeman)  
