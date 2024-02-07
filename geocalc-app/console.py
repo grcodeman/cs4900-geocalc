@@ -2,6 +2,7 @@
 import os
 import random
 import sys
+import numpy as np
 
 # Personal imports.
 # If this were to be published, this would simply reference the package
@@ -18,9 +19,14 @@ parent_directory = os.path.dirname(app_directory)
 sys.path.append(parent_directory)
 
 # Now you should be able to import modules from geocalc-lib
-from geocalc_lib.algorithms import *
 from geocalc_lib.shapes.point import Point
 from geocalc_lib.shapes.line import Line
+
+from geocalc_lib.algorithms.closest_pair_of_points import ClosestPairOfPoints
+from geocalc_lib.algorithms.convex_hull import ConvexHull
+from geocalc_lib.algorithms.largest_empty_circle import LargestEmptyCircle
+from geocalc_lib.algorithms.line_segment import LineSegmentIntersection
+
 
 class Console:
     def __init__(self) -> None:
@@ -49,6 +55,8 @@ class Console:
                     self.handle_remove_line(command)
                 elif command.startswith('clear_lines'):
                     self.handle_clear_lines(command)
+                elif command.startswith('closest_pair_of_points'):
+                    self.handle_closest_pair(command)
                 else:
                     # Print user error in yellow.
                     print("\033[93m" + "Unknown command." + "\033[0m")
@@ -63,8 +71,8 @@ class Console:
         try:
             # Assuming the command format is "add_point x y"
             _, x, y = command.split()
-            # Convert strings to integers and create an array.
-            point = [int(x), int(y)]
+            # Convert strings to integers and create a Point class variable.
+            point = Point(int(x), int(y))
             # Add the point to the points array.
             self.points.append(point)
             # Print a success message in green.
@@ -81,8 +89,8 @@ class Console:
         try:
             # Assuming the command format is "remove_point x y"
             _, x, y = command.split()
-            # Convert strings to integers and create an array.
-            point = [int(x), int(y)]
+            # Convert strings to integers and create a Point class variable
+            point = Point(int(x), int(y))
             try:
                 # Find the index of the point in points array.
                 index = self.points.index(point)
@@ -167,6 +175,22 @@ class Console:
             # Print an error in red.
             print("\033[91m" + f"Error clearing Lines: {e}" + "\033[0m")
 
+    def handle_closest_pair(self, command) -> None:
+        try:
+            # Assuming command format is "closest_pair_of_points"
+            _, = command.split()
+            # Turn points into an np.array and call ClosestPairOfPoints Algorithm 
+            np_points = np.array(self.points)
+            closest_pair_finder = ClosestPairOfPoints(np_points)
+            min_distance, best_pair = closest_pair_finder.closest_util(np_points)
+            # Print a success message in green displaying algorithm information
+            print("\033[92m" + f"({best_pair[0].coords[0]}, {best_pair[0].coords[1]}) " 
+                  + f"({best_pair[1].coords[0]}, {best_pair[1].coords[1]}) "
+                  + f"are the closest pair of points with a distance of {min_distance:.3f}."
+                  + "\033[0m")
+        except Exception as e:
+            # Print an error in red.
+            print("\033[91m" + f"Error finding closest pair: {e}" + "\033[0m")
 
 
 console = Console()
