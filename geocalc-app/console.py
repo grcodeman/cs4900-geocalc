@@ -29,6 +29,92 @@ from geocalc_lib.algorithms.line_segment import LineSegmentIntersection
 
 
 class Console:
+    """
+    A class to represent a command line ui for geocalc_lib package
+
+    Attributes
+    ----------
+    prompt : 'geocalc1.0> '
+        A string at the beginning of each input.
+    points : array
+        An array of points.
+    lines : array
+        An array of lines.
+
+    Methods
+    -------
+    run()
+        This method will run the command line ui,
+        asking the user for input commands until they enter 'exit' or 'quit'.
+    handle_add_point(command)
+        This method will add the given point to the points array.
+    handle_remove_point(command)
+        Removes a given point from the points array.
+    handle_clear_points(command)
+        Removes all points from the points array.
+    handle_add_line(command)
+        Adds a given line to the lines array.
+    handle_remove_line(command)
+        Removes a given line from the lines array.
+    handle_remove_lines
+        Removes all lines from the lines array.
+    handle_closest_pair(command)
+        Performs the closest pair of points algorithm
+        on the points in the points array.
+    handle_convex_hull(command)
+        Performs the convex hull algorithm on the points in the points array.
+    handle_largest_circle(command)
+        Performs the largest empty circle algorithm
+        on the points in the points array.
+    handle_line_segment(command)
+        Performs the line segment intersection algorithm on each line pair
+        to determine if the intersect.
+
+    Usage
+    -----
+        import numpy as np
+
+        from geocalc_lib.shapes.point import Point
+        from geocalc_lib.shapes.line import Line
+        from geocalc_lib.algorithms.closest_pair_of_points import ClosestPairOfPoints
+        from geocalc_lib.algorithms.convex_hull import ConvexHull
+        from geocalc_lib.algorithms.largest_empty_circle import LargestEmptyCircle
+        from geocalc_lib.algorithms.line_segment import LineSegmentIntersection
+
+        # Initialize the class
+        console = Console()
+
+        # Run the ui
+        console.run()
+
+    Commands
+    --------
+    add_point x y
+        Adds the given point to the points array.
+    remove_point x y
+        Removes the given point from the points array.
+    clear_points
+        Removes all points from the points array.
+    add_line x1 y1 x2 y2
+        Adds the given line to the lines array.
+    remove_line x1 y1 x2 y2
+        Removes the given line from the lines array.
+    clear_lines
+        Removes all lines from the lines array.
+    closest_pair_of_points
+        Performs the closest pair of points algorithm
+        on the points in the points array.
+    convex_hull
+        Performs the convex hull alforithm
+        on the points in the points array.
+    largest_empty_circle
+        Performs the largest empty circle algorithm
+        on the points in the points array.
+    line_segment
+        Performs the line segment intersection algorithm
+        for each pair of lines from the lines array.
+    """
+
     def __init__(self) -> None:
         self.prompt = 'geocalc1.0> '
         # Initialize an empty array for storing points and lines.
