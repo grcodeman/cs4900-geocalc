@@ -59,6 +59,8 @@ class Console:
                     self.handle_closest_pair(command)
                 elif command.startswith('convex_hull'):
                     self.handle_convex_hull(command)
+                elif command.startswith("largest_empty_circle"):
+                    self.handle_largest_circle(command)
                 else:
                     # Print user error in yellow.
                     print("\033[93m" + "Unknown command." + "\033[0m")
@@ -203,13 +205,33 @@ class Console:
             # Call ConvexHull algorithm and perform a graham scan
             convex_hull_finder = ConvexHull(points)
             convex_hull = convex_hull_finder.graham_scan(points)
-            #Print a success message in green displaying convex hull information
+            # Print a success message in green displaying convex hull information
             print("\033[92m" + "Convex Hull Points:" + "\033[0m")
             for point in convex_hull:
                 print("\033[92m" + f"({point[0]}, {point[1]})" + "\033[0m")
         except Exception as e:
             # Print an error in red.
             print("\033[91m" + f"Error finding convex hull: {e}" + "\033[0m")
+
+    def handle_largest_circle(self, command) -> None:
+        try:
+            # Assuming command format is "largest_empty_circle"
+            _, = command.split()
+            # Turn points into np.array of array point values
+            np_points = np.array([[point.coords[0], point.coords[1]] for point in self.points])
+            print(np_points)
+            # Call LargestEmptyCircle algorithm
+            lec = LargestEmptyCircle(np_points)
+            result = lec.find_largest_empty_circle()
+            print(result)
+            """
+            # Print a success message in green displaying largest empty circle information
+            print("\033[92m" + f"Largest empty circle has a center of {center} and radius of {radius}."
+                  + "\033[0m")
+            """
+        except Exception as e:
+            # Print an error in red.
+            print("\033[91m" + f"Error finding largest empty circle: {e}" + "\033[0m")
 
 
 console = Console()
