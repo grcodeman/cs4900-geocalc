@@ -1,7 +1,7 @@
 # This solution is inspired by Geeksforgeeks solution :
 # https://www.geeksforgeeks.org/closest-pair-of-points-using-divide-and-conquer-algorithm/#
 
-from shapes.point import Point
+from geocalc_lib.shapes.point import Point
 
 # Thirty party imports.
 import numpy as np
