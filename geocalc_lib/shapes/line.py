@@ -1,5 +1,5 @@
 # Personal imports.
-from point import Point
+from geocalc_lib.shapes.point import Point
 
 
 class Line:
