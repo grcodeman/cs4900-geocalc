@@ -14,9 +14,16 @@ function draw_canvas(points, lines, circles) {
     var start_y_arr = lines.start_y;
     var end_x_arr = lines.end_x;
     var end_y_arr = lines.end_y;
-
-    ctx.strokeStyle = "black";
+    var is_highlighted_arr = lines.is_highlighted;
+    
     for (let i = 0; i < start_x_arr.length; i++) {
+        if (is_highlighted_arr[i]) {
+            ctx.strokeStyle = "red";
+        }
+        else {
+            ctx.strokeStyle = "black"
+        }
+        ctx.beginPath();
         ctx.moveTo(start_x_arr[i], start_y_arr[i]);
         ctx.lineTo(end_x_arr[i], end_y_arr[i]);
         ctx.stroke();

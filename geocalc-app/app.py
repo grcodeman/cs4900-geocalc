@@ -43,25 +43,32 @@ def index():
 
     if request.method == 'POST':
         option = request.form['options']
-        point_num = request.form['point_num']
+        units = request.form['units']
 
-        # If user didn't given a number of points, re-render index page
-        if point_num == '':
+        # If user didn't given a number of points/lines, re-render index page
+        if units == '':
             return render_template('index.html', point_data=point_data,
                                    line_data=line_data,
                                    circle_data=circle_data,)
 
         # Create number of points given by user
-        points = random_points(int(point_num))
+        points = random_points(int(units))
 
         # Based on user entered option, call appropriate function
         if option == 'op1':
-            point_data, line_data, circle_data = line_seg(points)
+            lines = random_lines(int(units))
+            point_data, line_data, circle_data = line_seg(lines)
         elif option == 'op2':
+            # Create number of points given by user
+            points = random_points(int(units))
             point_data, line_data, circle_data = closest_pair(points)
         elif option == 'op3':
+            # Create number of points given by user
+            points = random_points(int(units))
             point_data, line_data, circle_data = convex_hull(points)
         elif option == 'op4':
+            # Create number of points given by user
+            points = random_points(int(units))
             point_data, line_data, circle_data = largest_circle(points)
         else:
             print('invalid option')
@@ -88,7 +95,7 @@ def closest_pair(points):
     lines = []
 
     # Put point, line, and circle data into json format
-    point_data, line_data, circle_data = data_into_json(points, lines, circles)
+    point_data, line_data, circle_data = data_into_json(points, lines, circles, [])
 
     return point_data, line_data, circle_data
 
@@ -112,31 +119,60 @@ def convex_hull(points):
     circles = []
 
     # Put point, line, and circle data into json format
-    point_data, line_data, circle_data = data_into_json(points, lines, circles)
+    point_data, line_data, circle_data = data_into_json(points, lines, circles, [False for line in lines])
 
     return point_data, line_data, circle_data
 
 
 def largest_circle(points):
-    Largest_Circle.test()
+    # Turn points into np.array of array point values
+    np_points = np.array([[point.coords[0], point.coords[1]]
+                            for point in points])
+    
+    # Run LargestEmptyCircle algorithm
+    lec = LargestEmptyCircle(np_points)
+    center, radius = lec.find_largest_empty_circle()
 
-    # Generate random point, line, and circle data
-    lines, circles = random_data()
+    circles = [Circle(Point(center[0], center[1]), radius)]
+
+    lines = []
 
     # Put point, line, and circle data into json format
-    point_data, line_data, circle_data = data_into_json(points, lines, circles)
+    point_data, line_data, circle_data = data_into_json(points, lines, circles, [])
 
     return point_data, line_data, circle_data
 
 
-def line_seg(points):
-    Line_Seg.test()
+def line_seg(lines):
+    # Get each pair of lines
+    line_pairs = []
+    for i, line1 in enumerate(lines):
+        for line2 in lines[i + 1:]:
+            line_pairs.append([line1, line2])
 
-    # Generate random line, and circle data
-    lines, circles = random_data()
+    # For each pair of lines, call LineSegmentIntersection algorithm
+    lsi = LineSegmentIntersection(np.array([]))
+    results = []
+    for pair in line_pairs:
+        result = lsi.do_intersect(pair[0].start, pair[0].end,
+                                    pair[1].start, pair[1].end)
+        results.append(result)
+
+    # Keep track of lines that intersect so they can be highlighted
+    is_highlighted = [False for line in lines]
+    for i in range(len(line_pairs)):
+        if results[i]:
+            for j in range(len(lines)):
+                if lines[j] == line_pairs[i][0]:
+                    is_highlighted[j] = True
+                if lines[j] == line_pairs[i][1]:
+                    is_highlighted[j] = True
+
+    points = []
+    circles = []
 
     # Put point, line, and circle data into json format
-    point_data, line_data, circle_data = data_into_json(points, lines, circles)
+    point_data, line_data, circle_data = data_into_json(points, lines, circles, is_highlighted)
 
     return point_data, line_data, circle_data
 
@@ -151,6 +187,17 @@ def random_points(x):
         points.append(point)
 
     return points
+
+# Function returns x random lines
+def random_lines(x):
+    # Create x random lines
+    lines = []
+    for _ in range(x):
+        line = Line(Point(random.randint(10, 490), random.randint(10, 490)),
+                    Point(random.randint(10, 490), random.randint(10, 490)))
+        lines.append(line)
+        
+    return lines
 
 
 # Function creates random points, lines, and circles
@@ -170,7 +217,7 @@ def random_data():
 
 
 # Function turns given point, line, and circle data into json format
-def data_into_json(points, lines, circles):
+def data_into_json(points, lines, circles, is_highlighted):
     point_data = {
         "x": [int(point.coords[0]) for point in points],
         "y": [int(point.coords[1]) for point in points],
@@ -181,6 +228,7 @@ def data_into_json(points, lines, circles):
         "start_y": [int(line.start.coords[1]) for line in lines],
         "end_x": [int(line.end.coords[0]) for line in lines],
         "end_y": [int(line.end.coords[1]) for line in lines],
+        "is_highlighted": is_highlighted,
     }
 
     circle_data = {
