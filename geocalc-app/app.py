@@ -237,7 +237,6 @@ def largest_circle():
     return f"Largest empty circle has a center of"\
            + f" {center} and radius of {radius:.3f}."
 
-
 def line_segment():
     try:
         # Get each pair of lines
@@ -272,7 +271,6 @@ def line_segment():
 
     return f"{intersect_count} lines intersect."
 
-
 # Function returns x random points
 def random_points(x):
     # Create x random points
@@ -282,34 +280,6 @@ def random_points(x):
         points.append(point)
 
     return points
-
-# Function returns x random lines
-def random_lines(x):
-    # Create x random lines
-    lines = []
-    for _ in range(x):
-        line = Line(Point(random.randint(10, 490), random.randint(10, 490)),
-                    Point(random.randint(10, 490), random.randint(10, 490)))
-        lines.append(line)
-        
-    return lines
-
-
-# Function creates random points, lines, and circles
-def random_data():
-    # Generate 2 random lines, and 2 random circles
-    lines = [Line(Point(random.randint(10, 490), random.randint(10, 490)),
-                  Point(random.randint(10, 490), random.randint(10, 490))),
-             Line(Point(random.randint(10, 490), random.randint(10, 490)),
-                  Point(random.randint(10, 490), random.randint(10, 490))),]
-
-    circles = [Circle(Point(random.randint(10, 490), random.randint(10, 490)),
-                      random.randint(50, 100)),
-               Circle(Point(random.randint(10, 490), random.randint(10, 490)),
-                      random.randint(50, 100)),]
-
-    return lines, circles
-
 
 # Function turns given point, line, and circle data into json format
 def data_into_json():
