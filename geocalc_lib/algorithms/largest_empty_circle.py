@@ -52,17 +52,20 @@ class LargestEmptyCircle:
             pts = self.points[simplex, :]
             A = np.linalg.det(np.c_[pts, np.ones((3, 1))])
             center = np.linalg.det(np.c_[np.sum(pts*pts, axis=1),
-                                         pts[:,1],
-                                         np.ones((3, 1))])
+                                        pts[:,1],
+                                        np.ones((3, 1))])
             center = np.array([center, np.linalg.det(np.c_[pts[:,0],
-                                                           np.sum(pts*pts, axis=1),
-                                                           np.ones((3, 1))])]) / (2.0 * A)
+                                                        np.sum(pts*pts, axis=1),
+                                                        np.ones((3, 1))])]) / (2.0 * A)
 
             radius = np.sqrt(np.sum(np.square(pts[0] - center)))
 
             # Check if the circle is empty and larger than the current
-            # largest.
-            if radius > max_radius and all(radius < np.linalg.norm(p - center) for p in self.points):
+            # largest. Exclude simplex vertices from the check.
+            simplex_points = set(tuple(point) for point in pts)
+            other_points = [p for p in self.points if tuple(p) not in simplex_points]
+
+            if radius > max_radius and all(np.linalg.norm(p - center) > radius for p in other_points):
                 max_radius = radius
                 best_circle = (center, radius)
 
