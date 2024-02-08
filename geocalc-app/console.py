@@ -323,7 +323,7 @@ class Console:
 
     def handle_largest_circle(self, command) -> None:
         # Check if there aren't enough points to run the algorithm.
-        if len(self.points) < 2:
+        if len(self.points) < 4:
             # Display a warning message in red and return
             print("\033[91m" + f"Not enough points."
                   + f" Add points with command 'add_point x y'" + "\033[0m")
@@ -335,20 +335,14 @@ class Console:
             # Turn points into np.array of array point values
             np_points = np.array([[point.coords[0], point.coords[1]]
                                  for point in self.points])
-            print(np_points)
             # Call LargestEmptyCircle algorithm
             lec = LargestEmptyCircle(np_points)
-            result = lec.find_largest_empty_circle()
-            print(result)
-            
-            """
+            center, radius = lec.find_largest_empty_circle()
             # Print a success message in green 
             # displaying algorithm information
             print("\033[92m" + f"Largest empty circle has a"
-                  + f"center of {center} and radius of {radius}."
+                  + f" center of {center} and radius of {radius:.3f}."
                   + "\033[0m")
-            """
-            
         except Exception as e:
             # Print an error in red.
             print("\033[91m" + f"Error finding largest empty circle: {e}" + "\033[0m")
