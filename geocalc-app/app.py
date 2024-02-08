@@ -72,6 +72,8 @@ def index():
             msg = closest_pair()
         elif command.startswith('convex_hull'):
             msg = convex_hull()
+        elif command.startswith('largest_empty_circle'):
+            msg = largest_circle()
         else:
             msg = "Invalid Command."
 
@@ -192,7 +194,6 @@ def closest_pair():
 
     return msg
 
-
 def convex_hull():
     try:
         # Turn points into array of tuples
@@ -214,24 +215,23 @@ def convex_hull():
 
     return f"Successfully created convex hull out of {len(hull)-1} points."
 
+def largest_circle():
+    try:
+        # Turn points into np.array of array point values
+        np_points = np.array([[point.coords[0], point.coords[1]]
+                                for point in points])
+        
+        # Run LargestEmptyCircle algorithm
+        lec = LargestEmptyCircle(np_points)
+        center, radius = lec.find_largest_empty_circle()
 
-def largest_circle(points):
-    # Turn points into np.array of array point values
-    np_points = np.array([[point.coords[0], point.coords[1]]
-                            for point in points])
-    
-    # Run LargestEmptyCircle algorithm
-    lec = LargestEmptyCircle(np_points)
-    center, radius = lec.find_largest_empty_circle()
+        circles.append(Circle(Point(int(center[0]), int(center[1])), int(radius)))
 
-    circles = [Circle(Point(center[0], center[1]), radius)]
+    except Exception as e:
+        return f"Error finding largest empty circle: {e}"
 
-    lines = []
-
-    # Put point, line, and circle data into json format
-    point_data, line_data, circle_data = data_into_json(points, lines, circles, [])
-
-    return point_data, line_data, circle_data
+    return f"Largest empty circle has a center of"\
+           + f" {center} and radius of {radius:.3f}."
 
 
 def line_seg(lines):
