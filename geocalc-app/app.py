@@ -48,9 +48,12 @@ def index():
     circle_data = {}
     msg = ""
 
-    # Remove any previously made circles
+    # Remove any previously made circles and highlighted lines
     for i in range(len(circles)-1, -1, -1):
         del circles[i]
+
+    for i in range(len(is_highlighted)):
+        is_highlighted[i] = False
 
     if request.method == 'POST':
         command = request.form['command']
@@ -74,6 +77,8 @@ def index():
             msg = convex_hull()
         elif command.startswith('largest_empty_circle'):
             msg = largest_circle()
+        elif command.startswith('line_segment'):
+            msg = line_segment()
         else:
             msg = "Invalid Command."
 
@@ -226,7 +231,6 @@ def largest_circle():
         center, radius = lec.find_largest_empty_circle()
 
         circles.append(Circle(Point(int(center[0]), int(center[1])), int(radius)))
-
     except Exception as e:
         return f"Error finding largest empty circle: {e}"
 
@@ -234,39 +238,39 @@ def largest_circle():
            + f" {center} and radius of {radius:.3f}."
 
 
-def line_seg(lines):
-    # Get each pair of lines
-    line_pairs = []
-    for i, line1 in enumerate(lines):
-        for line2 in lines[i + 1:]:
-            line_pairs.append([line1, line2])
+def line_segment():
+    try:
+        # Get each pair of lines
+        line_pairs = []
+        for i, line1 in enumerate(lines):
+            for line2 in lines[i + 1:]:
+                line_pairs.append([line1, line2])
 
-    # For each pair of lines, call LineSegmentIntersection algorithm
-    lsi = LineSegmentIntersection(np.array([]))
-    results = []
-    for pair in line_pairs:
-        result = lsi.do_intersect(pair[0].start, pair[0].end,
-                                    pair[1].start, pair[1].end)
-        results.append(result)
+        # For each pair of lines, call LineSegmentIntersection algorithm
+        lsi = LineSegmentIntersection(np.array([]))
+        results = []
+        for pair in line_pairs:
+            result = lsi.do_intersect(pair[0].start, pair[0].end,
+                                        pair[1].start, pair[1].end)
+            results.append(result)
 
-    # Keep track of lines that intersect so they can be highlighted
-    is_highlighted = [False for line in lines]
-    for i in range(len(line_pairs)):
-        if results[i]:
-            for j in range(len(lines)):
-                if lines[j] == line_pairs[i][0]:
-                    is_highlighted[j] = True
-                if lines[j] == line_pairs[i][1]:
-                    is_highlighted[j] = True
+        # Keep track of lines that intersect so they can be highlighted
+        for i in range(len(line_pairs)):
+            if results[i]:
+                for j in range(len(lines)):
+                    if lines[j] == line_pairs[i][0] \
+                    or lines[j] == line_pairs[i][1]:
+                        is_highlighted[j] = True
 
-    points = []
-    circles = []
+        # Get number of intersections
+        intersect_count = 0
+        for highlight in is_highlighted:
+            if highlight:
+                intersect_count += 1
+    except Exception as e:
+        return f"Error finding line segment intersections: {e}"
 
-    # Put point, line, and circle data into json format
-    point_data, line_data, circle_data = data_into_json(points, lines, circles, is_highlighted)
-
-    return point_data, line_data, circle_data
-
+    return f"{intersect_count} lines intersect."
 
 
 # Function returns x random points
