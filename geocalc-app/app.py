@@ -30,8 +30,13 @@ from geocalc_lib.algorithms.convex_hull import ConvexHull
 from geocalc_lib.algorithms.largest_empty_circle import LargestEmptyCircle
 from geocalc_lib.algorithms.line_segment import LineSegmentIntersection
 
-
 app = Flask(__name__)
+
+
+# Initialize points, lines, and circles as empty arrays
+points = []
+lines = []
+circles = []
 
 
 # Main Index Page
@@ -40,16 +45,27 @@ def index():
     point_data = {}
     line_data = {}
     circle_data = {}
+    msg = ""
 
     if request.method == 'POST':
         option = request.form['options']
         units = request.form['units']
+        command = request.form['command']
+
+        # Call appropriate function based on command input
+        if command.startswith('add_point'):
+            msg = add_point(command)
+        elif command.startswith('remove_point'):
+            msg = remove_point(command)
+        elif command.startswith("clear_points"):
+            msg = clear_points()
 
         # If user didn't given a number of points/lines, re-render index page
         if units == '':
             return render_template('index.html', point_data=point_data,
                                    line_data=line_data,
-                                   circle_data=circle_data,)
+                                   circle_data=circle_data,
+                                   msg=msg)
 
         # Create number of points given by user
         points = random_points(int(units))
@@ -75,11 +91,51 @@ def index():
 
         return render_template('index.html', point_data=point_data,
                                line_data=line_data,
-                               circle_data=circle_data,)
+                               circle_data=circle_data,
+                               msg=msg)
     else:
         return render_template('index.html', point_data=point_data,
                                line_data=line_data,
-                               circle_data=circle_data,)
+                               circle_data=circle_data,
+                               msg=msg)
+
+def add_point(command):
+    try:
+        # Parse command
+        _, x, y = command.split()
+        # Turn x and y into integers and create a Point class variable
+        point = Point(int(x), int(y))
+        # Add point to points
+        points.append(point)
+    except Exception as e:
+        return f"Error adding point: {e}"
+    
+    return f"{point} added."
+
+def remove_point(command):
+    try:
+        # Parse command
+        _, x, y = command.split()
+        # Turn x and y into integers and create a Point class variable
+        point = Point(int(x), int(y))
+        # Find the index of the point in points array.
+        index = points.index(point)
+        # Remove the point from the points array.
+        del points[index]
+    except Exception as e:
+        return f"Error removing point: {e}"
+    
+    return f"{point} removed"
+
+def clear_points():
+    try:
+        # Have points equal an empty array.
+        points = []
+    except Exception as e:
+        return f"Error clearing point: {e}"
+    
+    return f"Cleared points."
+
 
 
 def closest_pair(points):
