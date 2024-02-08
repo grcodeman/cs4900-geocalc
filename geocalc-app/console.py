@@ -169,6 +169,12 @@ class Console:
             # Convert strings to integers 
             # and create a Point class variable.
             point = Point(int(x), int(y))
+            # If point is already in points, don't add point
+            if point in self.points:
+                # Print message in yellow and return
+                print("\033[93m" + "Point already entered."
+                  + "\033[0m")
+                return
             # Add the point to the points array.
             self.points.append(point)
             # Print a success message in green.
@@ -224,6 +230,12 @@ class Console:
             _, x1, y1, x2, y2 = command.split()
             # Convert string to integers and create a Line class variable
             line = Line(Point(int(x1), int(y1)), Point(int(x2), int(y2)))
+            # If line is already in lines, don't add line
+            if line in self.lines:
+                # Print message in yellow and return
+                print("\033[93m" + "Line already entered."
+                  + "\033[0m")
+                return
             # Add the line to lines array
             self.lines.append(line)
             # Print a success message in green.
