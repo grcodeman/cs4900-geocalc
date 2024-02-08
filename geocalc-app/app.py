@@ -37,6 +37,7 @@ app = Flask(__name__)
 points = []
 lines = []
 circles = []
+is_highlighted = []  # Keeps track of if lines should be highlighted
 
 
 # Main Index Page
@@ -48,8 +49,6 @@ def index():
     msg = ""
 
     if request.method == 'POST':
-        option = request.form['options']
-        units = request.form['units']
         command = request.form['command']
 
         # Call appropriate function based on command input
@@ -65,35 +64,10 @@ def index():
             msg = remove_line(command)
         elif command.startswith("clear_lines"):
             msg = clear_lines()
-
-        # If user didn't given a number of points/lines, re-render index page
-        if units == '':
-            return render_template('index.html', point_data=point_data,
-                                   line_data=line_data,
-                                   circle_data=circle_data,
-                                   msg=msg)
-
-        # Create number of points given by user
-        points = random_points(int(units))
-
-        # Based on user entered option, call appropriate function
-        if option == 'op1':
-            lines = random_lines(int(units))
-            point_data, line_data, circle_data = line_seg(lines)
-        elif option == 'op2':
-            # Create number of points given by user
-            points = random_points(int(units))
-            point_data, line_data, circle_data = closest_pair(points)
-        elif option == 'op3':
-            # Create number of points given by user
-            points = random_points(int(units))
-            point_data, line_data, circle_data = convex_hull(points)
-        elif option == 'op4':
-            # Create number of points given by user
-            points = random_points(int(units))
-            point_data, line_data, circle_data = largest_circle(points)
         else:
-            print('invalid option')
+            msg = "Invalid Command."
+
+        point_data, line_data, circle_data = data_into_json() 
 
         return render_template('index.html', point_data=point_data,
                                line_data=line_data,
@@ -135,8 +109,9 @@ def remove_point(command):
 
 def clear_points():
     try:
-        # Have points equal an empty array.
-        points = []
+        # Remove each point in points.
+        for i in range(len(points)-1, -1, -1):
+            del points[i]
     except Exception as e:
         return f"Error clearing point: {e}"
     
@@ -148,8 +123,9 @@ def add_line(command):
         _, x1, y1, x2, y2 = command.split()
         # Turn parsed command into integers and create a Line.
         line = Line(Point(int(x1), int(y1)), Point(int(x2), int(y2)))
-        # Add line to lines.
+        # Add line to lines and False to is_highlighted.
         lines.append(line)
+        is_highlighted.append(False)
     except Exception as e:
         return f"Error adding line: {e}"
     
@@ -163,8 +139,9 @@ def remove_line(command):
         line = Line(Point(int(x1), int(y1)), Point(int(x2), int(y2)))
         # Find the index of the line in lines array.
         index = lines.index(line)
-        # Remove the line from the lines array.
+        # Remove the line from the lines and is_highlighted array.
         del lines[index]
+        del is_highlighted[index]
     except Exception as e:
         return f"Error removing line: {e}"
     
@@ -172,8 +149,10 @@ def remove_line(command):
 
 def clear_lines():
     try:
-        # Have lines equal an empty array.
-        lines = []
+        # Remove each line in lines.
+        for i in range(len(lines)-1, -1, -1):
+            del lines[i]
+            del is_highlighted[i]
     except Exception as e:
         return f"Error clearing lines: {e}"
     
@@ -315,7 +294,7 @@ def random_data():
 
 
 # Function turns given point, line, and circle data into json format
-def data_into_json(points, lines, circles, is_highlighted):
+def data_into_json():
     point_data = {
         "x": [int(point.coords[0]) for point in points],
         "y": [int(point.coords[1]) for point in points],
