@@ -48,6 +48,10 @@ def index():
     circle_data = {}
     msg = ""
 
+    # Remove any previously made circles
+    for i in range(len(circles)-1, -1, -1):
+        del circles[i]
+
     if request.method == 'POST':
         command = request.form['command']
 
@@ -64,6 +68,8 @@ def index():
             msg = remove_line(command)
         elif command.startswith("clear_lines"):
             msg = clear_lines()
+        elif command.startswith("closest_pair_of_points"):
+            msg = closest_pair()
         else:
             msg = "Invalid Command."
 
@@ -158,23 +164,31 @@ def clear_lines():
     
     return f"Cleared lines."
 
+def closest_pair():
+    try:
+        # Turn points in np array
+        np_points = np.array(points)
 
-def closest_pair(points):
-    np_points = np.array(points)
-    closest_pair_finder = ClosestPairOfPoints(np_points)
-    min_distance, best_pair = closest_pair_finder.closest_util(
-        np_points)
+        # Initalize closest pair of points algorithms
+        # and find closest pair of points
+        closest_pair_finder = ClosestPairOfPoints(np_points)
+        min_distance, best_pair = closest_pair_finder.closest_util(
+            np_points)
+        
+        # Generate best_pair as circles to display as red
+        circles.append(Circle(Point(best_pair[0].coords[0], best_pair[0].coords[1]), 3))
+        circles.append(Circle(Point(best_pair[1].coords[0], best_pair[1].coords[1]), 3))
+    except Exception as e:
+        return f"Error find closest pair of points: {e}"
     
-    # Generate best_pair as circles to display as red
-    circles = [Circle(Point(best_pair[0].coords[0], best_pair[0].coords[1]), 3), 
-               Circle(Point(best_pair[1].coords[0], best_pair[1].coords[1]), 3)]
+    msg = f"({best_pair[0].coords[0]}, " \
+          + f"{best_pair[0].coords[1]}) " \
+          + f"and ({best_pair[1].coords[0]}, "\
+          + f"{best_pair[1].coords[1]}) "\
+          + f"are the closest pair of points with"\
+          + f" a distance of {min_distance:.3f}."
 
-    lines = []
-
-    # Put point, line, and circle data into json format
-    point_data, line_data, circle_data = data_into_json(points, lines, circles, [])
-
-    return point_data, line_data, circle_data
+    return msg
 
 
 def convex_hull(points):
