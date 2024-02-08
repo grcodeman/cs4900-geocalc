@@ -64,7 +64,7 @@ class Console:
         Performs the closest pair of points algorithm
         on the points in the points array.
     handle_convex_hull(command)
-        Performs the convex hull algorithm 
+        Performs the convex hull algorithm
         on the points in the points array.
     handle_largest_circle(command)
         Performs the largest empty circle algorithm
@@ -79,10 +79,13 @@ class Console:
 
         from geocalc_lib.shapes.point import Point
         from geocalc_lib.shapes.line import Line
-        from geocalc_lib.algorithms.closest_pair_of_points import ClosestPairOfPoints
+        from geocalc_lib.algorithms.closest_pair_of_points import (
+            ClosestPairOfPoints)
         from geocalc_lib.algorithms.convex_hull import ConvexHull
-        from geocalc_lib.algorithms.largest_empty_circle import LargestEmptyCircle
-        from geocalc_lib.algorithms.line_segment import LineSegmentIntersection
+        from geocalc_lib.algorithms.largest_empty_circle import (
+            LargestEmptyCircle)
+        from geocalc_lib.algorithms.line_segment import (
+            LineSegmentIntersection)
 
         # Initialize the class
         console = Console()
@@ -129,7 +132,7 @@ class Console:
             try:
                 command = input(self.prompt)
                 # Exit commands.
-                if command.lower() in ['exit', 'quit']:  
+                if command.lower() in ['exit', 'quit']:
                     print("Exiting the console.")
                     break
                 elif command.startswith('add_point'):
@@ -166,14 +169,14 @@ class Console:
         try:
             # Assuming the command format is "add_point x y"
             _, x, y = command.split()
-            # Convert strings to integers 
+            # Convert strings to integers
             # and create a Point class variable.
             point = Point(int(x), int(y))
             # If point is already in points, don't add point
             if point in self.points:
                 # Print message in yellow and return
                 print("\033[93m" + "Point already entered."
-                  + "\033[0m")
+                      + "\033[0m")
                 return
             # Add the point to the points array.
             self.points.append(point)
@@ -191,7 +194,7 @@ class Console:
         try:
             # Assuming the command format is "remove_point x y"
             _, x, y = command.split()
-            # Convert strings to integers 
+            # Convert strings to integers
             # and create a Point class variable
             point = Point(int(x), int(y))
             try:
@@ -203,7 +206,8 @@ class Console:
                 print("\033[92m" + f"Point {point} removed." + "\033[0m")
             except ValueError:
                 # Print an error in red.
-                print("\033[91m" + f"Point entered does not exist." + "\033[0m")
+                print("\033[91m" + f"Point entered does not exist."
+                      + "\033[0m")
         except ValueError:
             # Print an error in yellow.
             print("\033[93m" + "Invalid point format. Usage: remove_point x y"
@@ -211,7 +215,7 @@ class Console:
         except Exception as e:
             # Print an error in red.
             print("\033[91m" + f"Error removing point: {e}" + "\033[0m")
-        
+
     def handle_clear_points(self, command) -> None:
         try:
             # Assuming the command format is "clear_points"
@@ -234,7 +238,7 @@ class Console:
             if line in self.lines:
                 # Print message in yellow and return
                 print("\033[93m" + "Line already entered."
-                  + "\033[0m")
+                      + "\033[0m")
                 return
             # Add the line to lines array
             self.lines.append(line)
@@ -242,8 +246,8 @@ class Console:
             print("\033[92m" + f"Point {line} added." + "\033[0m")
         except ValueError:
             # Print a user error in yellow.
-            print("\033[93m" + "Invalid point format. Usage: add_line x1 y1 x2 y2"
-                  + "\033[0m")
+            print("\033[93m" + "Invalid point format. Usage: "
+                  + "add_line x1 y1 x2 y2" + "\033[0m")
         except Exception as e:
             # Print an error in red.
             print("\033[91m" + f"Error adding line: {e}" + "\033[0m")
@@ -266,12 +270,12 @@ class Console:
                 print("\033[91m" + f"Line entered does not exist." + "\033[0m")
         except ValueError:
             # Print an error in yellow.
-            print("\033[93m" + "Invalid line format. Usage: remove_line x1 y1 x2 y2"
-                  + "\033[0m")
+            print("\033[93m" + "Invalid line format. Usage: "
+                  + "remove_line x1 y1 x2 y2" + "\033[0m")
         except Exception as e:
             # Print an error in red.
             print("\033[91m" + f"Error removing line: {e}" + "\033[0m")
-        
+
     def handle_clear_lines(self, command) -> None:
         try:
             # Assuming the command format is "clear_lines"
@@ -291,17 +295,21 @@ class Console:
             print("\033[91m" + f"Not enough points."
                   + f" Add points with command 'add_point x y'" + "\033[0m")
             return
-        
+
         try:
             # Assuming command format is "closest_pair_of_points"
             _, = command.split()
-            # Turn points into an np.array and call ClosestPairOfPoints algorithm 
+            # Turn points into an np.array
+            # and call ClosestPairOfPoints algorithm
             np_points = np.array(self.points)
             closest_pair_finder = ClosestPairOfPoints(np_points)
-            min_distance, best_pair = closest_pair_finder.closest_util(np_points)
-            # Print a success message in green displaying algorithm information
-            print("\033[92m" + f"({best_pair[0].coords[0]}, {best_pair[0].coords[1]}) "
-                  + f"and ({best_pair[1].coords[0]}, {best_pair[1].coords[1]}) "
+            min_distance, best_pair = closest_pair_finder.closest_util(
+                np_points)
+            # Print a success message in green displaying algorithm info
+            print("\033[92m" + f"({best_pair[0].coords[0]}, "
+                  + f"{best_pair[0].coords[1]}) "
+                  + f"and ({best_pair[1].coords[0]}, "
+                  + f"{best_pair[1].coords[1]}) "
                   + f"are the closest pair of points with"
                   + f" a distance of {min_distance:.3f}."
                   + "\033[0m")
@@ -316,16 +324,17 @@ class Console:
             print("\033[91m" + f"Not enough points."
                   + f" Add points with command 'add_point x y'" + "\033[0m")
             return
-        
+
         try:
             # Assuming command format is "convex_hull"
             _, = command.split()
             # Turn points into array of tuples
-            points = [(point.coords[0], point.coords[1]) for point in self.points]
+            points = [(point.coords[0], point.coords[1])
+                      for point in self.points]
             # Call ConvexHull algorithm and perform a graham scan
             convex_hull_finder = ConvexHull(points)
             convex_hull = convex_hull_finder.graham_scan(points)
-            # Print a success message in green displaying convex hull information
+            # Print a success message in green displaying convex hull info
             print("\033[92m" + "Convex Hull Shape:" + "\033[0m")
             for point in convex_hull:
                 print("\033[92m" + f"({point[0]}, {point[1]})" + "\033[0m")
@@ -340,7 +349,7 @@ class Console:
             print("\033[91m" + f"Not enough points."
                   + f" Add points with command 'add_point x y'" + "\033[0m")
             return
-        
+
         try:
             # Assuming command format is "largest_empty_circle"
             _, = command.split()
@@ -350,21 +359,23 @@ class Console:
             # Call LargestEmptyCircle algorithm
             lec = LargestEmptyCircle(np_points)
             center, radius = lec.find_largest_empty_circle()
-            # Print a success message in green 
+            # Print a success message in green
             # displaying algorithm information
             print("\033[92m" + f"Largest empty circle has a"
                   + f" center of {center} and radius of {radius:.3f}."
                   + "\033[0m")
         except Exception as e:
             # Print an error in red.
-            print("\033[91m" + f"Error finding largest empty circle: {e}" + "\033[0m")
-    
+            print("\033[91m" + f"Error finding largest empty circle: "
+                  + f"{e}" + "\033[0m")
+
     def handle_line_segment(self, command) -> None:
         # Check if there aren't enough lines to run the algorithm.
         if len(self.lines) < 2:
             # Display a warning message in red and return
             print("\033[91m" + f"Not enough lines."
-                  + f" Add lines with command 'add_line x1 y1 x2 y2'" + "\033[0m")
+                  + f" Add lines with command 'add_line x1 y1 x2 y2'"
+                  + "\033[0m")
             return
 
         try:
@@ -379,14 +390,14 @@ class Console:
             lsi = LineSegmentIntersection(np.array(self.points))
             results = []
             for pair in line_pairs:
-                result = lsi.do_intersect(pair[0].start, pair[0].end, 
+                result = lsi.do_intersect(pair[0].start, pair[0].end,
                                           pair[1].start, pair[1].end)
                 results.append(result)
-            # Print a success message in green displaying line segment information
-            print("\033[92m" + f"Line Segment Intersections:"+ "\033[0m")
+            # Print a success message in green displaying line segment info
+            print("\033[92m" + f"Line Segment Intersections:" + "\033[0m")
             # For each line_pair, display whether they intersected or not
             for i in range(len(line_pairs)):
-                result = "intersect" if results[i] == True else "do not intersect"
+                result = "intersect" if results[i] else "do not intersect"
                 print("\033[92m" + f"[({line_pairs[i][0].start.coords[0]}, "
                       + f"{line_pairs[i][0].start.coords[1]}),"
                       + f" ({line_pairs[i][0].end.coords[0]},"
