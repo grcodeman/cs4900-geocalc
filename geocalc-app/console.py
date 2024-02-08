@@ -175,13 +175,13 @@ class Console:
             # If point is already in points, don't add point
             if point in self.points:
                 # Print message in yellow and return
-                print("\033[93m" + "Point already entered."
+                print("\033[93m" + f"{point} already entered."
                       + "\033[0m")
                 return
             # Add the point to the points array.
             self.points.append(point)
             # Print a success message in green.
-            print("\033[92m" + f"Point {point} added." + "\033[0m")
+            print("\033[92m" + f"{point} added." + "\033[0m")
         except ValueError:
             # Print a user error in yellow.
             print("\033[93m" + "Invalid point format. Usage: add_point x y"
@@ -203,10 +203,10 @@ class Console:
                 # Remove the point from the points array.
                 del self.points[index]
                 # Print a success message in green.
-                print("\033[92m" + f"Point {point} removed." + "\033[0m")
+                print("\033[92m" + f"{point} removed." + "\033[0m")
             except ValueError:
                 # Print an error in red.
-                print("\033[91m" + f"Point entered does not exist."
+                print("\033[91m" + f"{point} does not exist."
                       + "\033[0m")
         except ValueError:
             # Print an error in yellow.
@@ -237,13 +237,13 @@ class Console:
             # If line is already in lines, don't add line
             if line in self.lines:
                 # Print message in yellow and return
-                print("\033[93m" + "Line already entered."
+                print("\033[93m" + f"{line} already entered."
                       + "\033[0m")
                 return
             # Add the line to lines array
             self.lines.append(line)
             # Print a success message in green.
-            print("\033[92m" + f"Point {line} added." + "\033[0m")
+            print("\033[92m" + f"{line} added." + "\033[0m")
         except ValueError:
             # Print a user error in yellow.
             print("\033[93m" + "Invalid point format. Usage: "
@@ -264,10 +264,10 @@ class Console:
                 # Remove the line from the lines array.
                 del self.lines[index]
                 # Print a success message in green.
-                print("\033[92m" + f"Line {line} removed." + "\033[0m")
+                print("\033[92m" + f"{line} removed." + "\033[0m")
             except ValueError:
                 # Print an error in red.
-                print("\033[91m" + f"Line entered does not exist." + "\033[0m")
+                print("\033[91m" + f"{line} does not exist." + "\033[0m")
         except ValueError:
             # Print an error in yellow.
             print("\033[93m" + "Invalid line format. Usage: "
