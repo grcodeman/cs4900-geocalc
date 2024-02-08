@@ -70,6 +70,8 @@ def index():
             msg = clear_lines()
         elif command.startswith("closest_pair_of_points"):
             msg = closest_pair()
+        elif command.startswith('convex_hull'):
+            msg = convex_hull()
         else:
             msg = "Invalid Command."
 
@@ -179,7 +181,7 @@ def closest_pair():
         circles.append(Circle(Point(best_pair[0].coords[0], best_pair[0].coords[1]), 3))
         circles.append(Circle(Point(best_pair[1].coords[0], best_pair[1].coords[1]), 3))
     except Exception as e:
-        return f"Error find closest pair of points: {e}"
+        return f"Error finding closest pair of points: {e}"
     
     msg = f"({best_pair[0].coords[0]}, " \
           + f"{best_pair[0].coords[1]}) " \
@@ -191,28 +193,26 @@ def closest_pair():
     return msg
 
 
-def convex_hull(points):
-    # Turn points into array of tuples
-    tuple_points = [(point.coords[0], point.coords[1])
-              for point in points]
+def convex_hull():
+    try:
+        # Turn points into array of tuples
+        tuple_points = [(point.coords[0], point.coords[1])
+                        for point in points]
 
-    # Initialize Convex_Hull and do a graham scan on all points
-    ch = ConvexHull(tuple_points)
-    hull = ch.graham_scan(tuple_points)
+        # Initialize Convex_Hull and do a graham scan on all points
+        ch = ConvexHull(tuple_points)
+        hull = ch.graham_scan(tuple_points)
 
-    # Create Lines based on graham scan's hull values
-    lines = []
-    for i in range(len(hull)-1):
-        line = Line(Point(hull[i][0], hull[i][1]),
-                    Point(hull[i+1][0], hull[i+1][1]))
-        lines.append(line)
+        # Create Lines based on graham scan's hull values
+        for i in range(len(hull)-1):
+            line = Line(Point(hull[i][0], hull[i][1]),
+                        Point(hull[i+1][0], hull[i+1][1]))
+            lines.append(line)
+            is_highlighted.append(False)
+    except Exception as e:
+        return f"Error finding convex hull: {e}"
 
-    circles = []
-
-    # Put point, line, and circle data into json format
-    point_data, line_data, circle_data = data_into_json(points, lines, circles, [False for line in lines])
-
-    return point_data, line_data, circle_data
+    return f"Successfully created convex hull out of {len(hull)-1} points."
 
 
 def largest_circle(points):
