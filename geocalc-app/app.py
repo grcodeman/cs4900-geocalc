@@ -2,6 +2,7 @@
 import os
 import random
 import sys
+import numpy as np
 
 # Third-party imports.
 from flask import Flask, render_template, request
@@ -21,8 +22,13 @@ parent_directory = os.path.dirname(app_directory)
 sys.path.append(parent_directory)
 
 # Now you should be able to import modules from geocalc-lib
-from geocalc_lib.algorithms import *
-from geocalc_lib.shapes.circle import *
+from geocalc_lib.shapes.point import Point
+from geocalc_lib.shapes.line import Line
+from geocalc_lib.shapes.circle import Circle
+from geocalc_lib.algorithms.closest_pair_of_points import ClosestPairOfPoints
+from geocalc_lib.algorithms.convex_hull import ConvexHull
+from geocalc_lib.algorithms.largest_empty_circle import LargestEmptyCircle
+from geocalc_lib.algorithms.line_segment import LineSegmentIntersection
 
 
 app = Flask(__name__)
@@ -69,23 +75,17 @@ def index():
                                circle_data=circle_data,)
 
 
-def line_seg(points):
-    Line_Seg.test()
-
-    # Generate random line, and circle data
-    lines, circles = random_data()
-
-    # Put point, line, and circle data into json format
-    point_data, line_data, circle_data = data_into_json(points, lines, circles)
-
-    return point_data, line_data, circle_data
-
-
 def closest_pair(points):
-    Closest_Pair.test()
+    np_points = np.array(points)
+    closest_pair_finder = ClosestPairOfPoints(np_points)
+    min_distance, best_pair = closest_pair_finder.closest_util(
+        np_points)
+    
+    # Generate best_pair as circles to display as red
+    circles = [Circle(Point(best_pair[0].coords[0], best_pair[0].coords[1]), 3), 
+               Circle(Point(best_pair[1].coords[0], best_pair[1].coords[1]), 3)]
 
-    # Generate random point, line, and circle data
-    lines, circles = random_data()
+    lines = []
 
     # Put point, line, and circle data into json format
     point_data, line_data, circle_data = data_into_json(points, lines, circles)
@@ -94,14 +94,13 @@ def closest_pair(points):
 
 
 def convex_hull(points):
-    # Convert Class point values into array values
-    point_arr = []
-    for point in points:
-        point_arr.append([point.x, point.y])
+    # Turn points into array of tuples
+    tuple_points = [(point.coords[0], point.coords[1])
+              for point in points]
 
     # Initialize Convex_Hull and do a graham scan on all points
-    ch = Convex_Hull()
-    hull = ch.graham_scan(point_arr)
+    ch = ConvexHull(tuple_points)
+    hull = ch.graham_scan(tuple_points)
 
     # Create Lines based on graham scan's hull values
     lines = []
@@ -128,6 +127,19 @@ def largest_circle(points):
     point_data, line_data, circle_data = data_into_json(points, lines, circles)
 
     return point_data, line_data, circle_data
+
+
+def line_seg(points):
+    Line_Seg.test()
+
+    # Generate random line, and circle data
+    lines, circles = random_data()
+
+    # Put point, line, and circle data into json format
+    point_data, line_data, circle_data = data_into_json(points, lines, circles)
+
+    return point_data, line_data, circle_data
+
 
 
 # Function returns x random points
@@ -160,21 +172,21 @@ def random_data():
 # Function turns given point, line, and circle data into json format
 def data_into_json(points, lines, circles):
     point_data = {
-        "x": [point.x for point in points],
-        "y": [point.y for point in points],
+        "x": [int(point.coords[0]) for point in points],
+        "y": [int(point.coords[1]) for point in points],
     }
 
     line_data = {
-        "start_x": [line.start.x for line in lines],
-        "start_y": [line.start.y for line in lines],
-        "end_x": [line.end.x for line in lines],
-        "end_y": [line.end.y for line in lines],
+        "start_x": [int(line.start.coords[0]) for line in lines],
+        "start_y": [int(line.start.coords[1]) for line in lines],
+        "end_x": [int(line.end.coords[0]) for line in lines],
+        "end_y": [int(line.end.coords[1]) for line in lines],
     }
 
     circle_data = {
-        "x": [circle.center.x for circle in circles],
-        "y": [circle.center.y for circle in circles],
-        "radius": [circle.radius for circle in circles],
+        "x": [int(circle.center.coords[0]) for circle in circles],
+        "y": [int(circle.center.coords[1]) for circle in circles],
+        "radius": [int(circle.radius) for circle in circles],
     }
 
     return point_data, line_data, circle_data

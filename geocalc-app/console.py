@@ -21,9 +21,7 @@ sys.path.append(parent_directory)
 # Now you should be able to import modules from geocalc-lib
 from geocalc_lib.shapes.point import Point
 from geocalc_lib.shapes.line import Line
-
 from geocalc_lib.algorithms.closest_pair_of_points import ClosestPairOfPoints
-
 from geocalc_lib.algorithms.convex_hull import ConvexHull
 from geocalc_lib.algorithms.largest_empty_circle import LargestEmptyCircle
 from geocalc_lib.algorithms.line_segment import LineSegmentIntersection

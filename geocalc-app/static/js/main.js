@@ -22,6 +22,17 @@ function draw_canvas(points, lines, circles) {
         ctx.stroke();
     }
 
+    // Draw points
+    var x_arr = points.x;
+    var y_arr = points.y;
+
+    ctx.fillStyle = "blue";
+    for (let i = 0; i < x_arr.length; i++) {
+        ctx.beginPath();
+        ctx.ellipse(x_arr[i], y_arr[i], 3, 3, 0, 0, Math.PI * 2);
+        ctx.fill();
+    }
+
     // Draw circles
     var center_x_arr = circles.x;
     var center_y_arr = circles.y;
@@ -31,17 +42,6 @@ function draw_canvas(points, lines, circles) {
     for (let i = 0; i < center_x_arr.length; i++) {
         ctx.beginPath();
         ctx.ellipse(center_x_arr[i], center_y_arr[i], radius_arr[i], radius_arr[i], 0, 0, Math.PI * 2);
-        ctx.fill();
-    }
-
-    // Draw points
-    var x_arr = points.x;
-    var y_arr = points.y;
-
-    ctx.fillStyle = "blue";
-    for (let i = 0; i < x_arr.length; i++) {
-        ctx.beginPath();
-        ctx.ellipse(x_arr[i], y_arr[i], 3, 3, 0, 0, Math.PI * 2);
         ctx.fill();
     }
 }
