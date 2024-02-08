@@ -59,6 +59,12 @@ def index():
             msg = remove_point(command)
         elif command.startswith("clear_points"):
             msg = clear_points()
+        elif command.startswith("add_line"):
+            msg = add_line(command)
+        elif command.startswith("remove_line"):
+            msg = remove_line(command)
+        elif command.startswith("clear_lines"):
+            msg = clear_lines()
 
         # If user didn't given a number of points/lines, re-render index page
         if units == '':
@@ -136,6 +142,42 @@ def clear_points():
     
     return f"Cleared points."
 
+def add_line(command):
+    try:
+        # Parse command
+        _, x1, y1, x2, y2 = command.split()
+        # Turn parsed command into integers and create a Line.
+        line = Line(Point(int(x1), int(y1)), Point(int(x2), int(y2)))
+        # Add line to lines.
+        lines.append(line)
+    except Exception as e:
+        return f"Error adding line: {e}"
+    
+    return f"{line} added"
+
+def remove_line(command):
+    try:
+        # Parse command
+        _, x1, y1, x2, y2 = command.split()
+        # Turn parsed command into integers and create a Line.
+        line = Line(Point(int(x1), int(y1)), Point(int(x2), int(y2)))
+        # Find the index of the line in lines array.
+        index = lines.index(line)
+        # Remove the line from the lines array.
+        del lines[index]
+    except Exception as e:
+        return f"Error removing line: {e}"
+    
+    return f"{line} removed."
+
+def clear_lines():
+    try:
+        # Have lines equal an empty array.
+        lines = []
+    except Exception as e:
+        return f"Error clearing lines: {e}"
+    
+    return f"Cleared lines."
 
 
 def closest_pair(points):
