@@ -54,7 +54,7 @@ class ClosestPairOfPoints:
         Given two points, calculate the euclidean distance, using
         linalg.norm.
         """
-        
+
         return np.linalg.norm(p1.coords - p2.coords)
 
     def brute_force(self, points) -> float:
@@ -71,7 +71,7 @@ class ClosestPairOfPoints:
                 dist_ij = self.dist(points[i], points[j])
                 if dist_ij < min_dist:
                     min_dist = dist_ij
-                    min_pair = (points[i],points[j])
+                    min_pair = (points[i], points[j])
         return min_dist, min_pair
 
     def strip_closest(self, strip, d, best_pair) -> float:
@@ -111,14 +111,14 @@ class ClosestPairOfPoints:
         """
 
         # Check if sorted already or not.
-        if sort_x:  
+        if sort_x:
             points = sorted(points, key=lambda point: point.coords[0])
 
         n = len(points)
         # If there are few points, do it directly.
         if n <= 3:
             return self.brute_force(points)
-        
+
         # Otherwise, divide it to two parts and recursivly call each
         # halve.
         mid = n // 2
@@ -155,4 +155,4 @@ class ClosestPairOfPoints:
         else:
             # Otherwise, return the minimum distance found in the
             # divided sections.
-            return d, best_pair  
+            return d, best_pair

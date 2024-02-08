@@ -8,12 +8,12 @@ import numpy as np
 class LineSegmentIntersection:
     """
     A class to represent the line segment intersection algorithm.
-    
+
     Attributes
     ----------
     points : np.array
         An array of points.
-    
+
     Methods
     -------
     on_segment(p, q, r)
@@ -60,7 +60,7 @@ class LineSegmentIntersection:
         return horizontal and vertical
 
     # to find the orientation of an ordered triplet (p,q,r)
-    def orientation(self, p, q, r) -> int: 
+    def orientation(self, p, q, r) -> int:
         """
         Given three points p, q, and r, the function finds the
         orientation

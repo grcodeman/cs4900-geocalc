@@ -9,19 +9,19 @@ import numpy as np
 class ConvexHull:
     """
     A class to represent the Convex Hull algorithm.
-    
+
     Attributes
     ----------
     points : np.array
         An array of points.
-        
+
     Methods
     -------
     orientation(a, b, c)
         Determine the orientation of the the points.
     graham_scan(points)
         This method will return the convex hull of the points.
-    
+
     Usage
     -----
     import numpy as np
@@ -70,7 +70,8 @@ class ConvexHull:
         for point in sorted_points:
             # Ensures to add points to the convex hull in
             # counterclockwise.
-            while len(hull) >= 2 and self.orientation(hull[-2], hull[-1], point) != 2:
+            while (len(hull) >= 2 and
+                   self.orientation(hull[-2], hull[-1], point) != 2):
                 hull.pop()
             hull.append(point)
         # Add the pivot point back to array to come back to starting

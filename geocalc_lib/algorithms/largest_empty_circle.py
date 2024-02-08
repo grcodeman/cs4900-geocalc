@@ -16,13 +16,13 @@ class LargestEmptyCircle:
         An array of points.
     delaunay : scipy.spatial.Delaunay
         A Delaunay triangulation of the points.
-    
+
     Methods
     -------
     find_largest_empty_circle()
         This method will return the center and radius of the largest
         empty circle.
-    
+
     Usage
     -----
     import numpy as np
@@ -37,7 +37,7 @@ class LargestEmptyCircle:
     # Find the largest empty circle.
     center, radius = lec.find_largest_empty_circle()
     """
-    
+
     def __init__(self, points) -> None:
         self.points = np.array(points)
         self.delaunay = Delaunay(points)
@@ -52,21 +52,26 @@ class LargestEmptyCircle:
             pts = self.points[simplex, :]
             A = np.linalg.det(np.c_[pts, np.ones((3, 1))])
             center = np.linalg.det(np.c_[np.sum(pts*pts, axis=1),
-                                        pts[:,1],
-                                        np.ones((3, 1))])
-            center = np.array([center, np.linalg.det(np.c_[pts[:,0],
-                                                        np.sum(pts*pts, axis=1),
-                                                        np.ones((3, 1))])]) / (2.0 * A)
+                                   pts[:, 1],
+                                   np.ones((3, 1))])
+            center = np.array([center,
+                               np.linalg.det(np.c_[pts[:, 0],
+                                             np.sum(pts*pts, axis=1),
+                                             np.ones((3, 1))])]) / (2.0 * A)
 
             radius = np.sqrt(np.sum(np.square(pts[0] - center)))
 
             # Check if the circle is empty and larger than the current
             # largest. Exclude simplex vertices from the check.
             simplex_points = set(tuple(point) for point in pts)
-            other_points = [p for p in self.points if tuple(p) not in simplex_points]
+            other_points = []
+            for p in self.points:
+                if tuple(p) not in simplex_points:
+                    other_points.append(p)
 
-            if radius > max_radius and all(np.linalg.norm(p - center) > radius for p in other_points):
-                max_radius = radius
+            if radius > max_radius:
+                if all(np.linalg.norm(p - center) > radius for p in other_points):
+                    max_radius = radius
                 best_circle = (center, radius)
 
         return best_circle
@@ -80,20 +85,23 @@ class TestLargestEmptyCircle(unittest.TestCase):
             [1, 0],
             [1, 1]
         ])
-        
+
         # Instantiate the LargestEmptyCircle class with the points.
         lec = LargestEmptyCircle(points)
-        
+
         # Find the largest empty circle.
         center, radius = lec.find_largest_empty_circle()
-        
-        # Expected center and radius for the largest empty circle in the square.
+
+        # Expected center and radius for the largest empty circle in
+        # the square.
         expected_center = np.array([0.5, 0.5])
         expected_radius = np.sqrt(2) / 2
-        
-        # Check if the found center and radius are close to the expected values.
+
+        # Check if the found center and radius are close to the
+        # expected values.
         fail_message = "The center of the largest empty circle is incorrect."
         self.assertTrue(np.allclose(center, expected_center), fail_message)
-        radius_fail_message = "The radius of the largest empty circle is incorrect."
+        radius_fail_message = ("The radius of the largest empty circle is "
+                               + "incorrect.")
         self.assertAlmostEqual(radius, expected_radius, places=5,
                                msg=radius_fail_message)
