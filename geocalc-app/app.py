@@ -39,7 +39,7 @@ lines = []
 circles = []
 is_highlighted = []  # Keeps track of if lines should be highlighted
 
-grid_size = 10
+grid_size = [10]
 
 # Main Index Page
 @app.route('/', methods=['POST', "GET"])
@@ -80,6 +80,8 @@ def index():
             msg = largest_circle()
         elif command.startswith('line_segment'):
             msg = line_segment()
+        elif command.startswith('set_grid'):
+            msg = set_grid(command)
         else:
             msg = "Invalid Command."
 
@@ -88,12 +90,12 @@ def index():
         return render_template('index.html', point_data=point_data,
                                line_data=line_data,
                                circle_data=circle_data,
-                               msg=msg, grid_size=grid_size)
+                               msg=msg, grid_size=grid_size[0])
     else:
         return render_template('index.html', point_data=point_data,
                                line_data=line_data,
                                circle_data=circle_data,
-                               msg=msg, grid_size=grid_size)
+                               msg=msg, grid_size=grid_size[0])
 
 def add_point(command):
     try:
@@ -272,6 +274,19 @@ def line_segment():
 
     return f"{intersect_count} lines intersect."
 
+def set_grid(command):
+    try:
+        # Parse command
+        _, new_size = command.split()
+        # Set new_size as an integer
+        new_size = int(new_size)
+        # Set grid_size to new_size
+        del grid_size[0]
+        grid_size.append(new_size)
+    except Exception as e:
+        return f"Error setting new grid size: {e}"
+
+    return f"Successfully set new grid size to {grid_size}"
 
 # Function turns given point, line, and circle data into json format
 def data_into_json():
