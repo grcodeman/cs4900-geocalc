@@ -243,7 +243,7 @@ def largest_circle():
         lec = LargestEmptyCircle(np_points)
         center, radius = lec.find_largest_empty_circle()
 
-        circles.append(Circle(Point(int(center[0]), int(center[1])), int(radius)))
+        circles.append(Circle(Point(float(center[0]), float(center[1])), float(radius)))
     except Exception as e:
         return f"Error finding largest empty circle: {e}"
 
@@ -314,9 +314,9 @@ def data_into_json():
     }
 
     circle_data = {
-        "x": [int(circle.center.coords[0]) for circle in circles],
-        "y": [int(circle.center.coords[1]) for circle in circles],
-        "radius": [int(circle.radius) for circle in circles],
+        "x": [float(circle.center.coords[0]) for circle in circles],
+        "y": [float(circle.center.coords[1]) for circle in circles],
+        "radius": [float(circle.radius) for circle in circles],
     }
 
     return point_data, line_data, circle_data
