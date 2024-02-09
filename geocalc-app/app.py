@@ -37,7 +37,8 @@ app = Flask(__name__)
 points = []
 lines = []
 circles = []
-is_highlighted = []  # Keeps track of if lines should be highlighted
+# Keeps track of if points and lines should be highlighted
+is_highlighted = [[], []]
 
 grid_size = [10]
 
@@ -49,12 +50,16 @@ def index():
     circle_data = {}
     msg = ""
 
-    # Remove any previously made circles and highlighted lines
+    # Remove any previously made circles
+    # and highlighted points and lines
     for i in range(len(circles)-1, -1, -1):
         del circles[i]
 
-    for i in range(len(is_highlighted)):
-        is_highlighted[i] = False
+    for i in range(len(is_highlighted[0])):
+        is_highlighted[0][i] = False
+
+    for i in range(len(is_highlighted[1])):
+        is_highlighted[1][i] = False
 
     if request.method == 'POST':
         command = request.form['command']
@@ -105,6 +110,7 @@ def add_point(command):
         point = Point(int(x), int(y))
         # Add point to points
         points.append(point)
+        is_highlighted[0].append(False)
     except Exception as e:
         return f"Error adding point: {e}"
     
@@ -120,6 +126,7 @@ def remove_point(command):
         index = points.index(point)
         # Remove the point from the points array.
         del points[index]
+        del is_highlighted[0][index]
     except Exception as e:
         return f"Error removing point: {e}"
     
@@ -130,6 +137,7 @@ def clear_points():
         # Remove each point in points.
         for i in range(len(points)-1, -1, -1):
             del points[i]
+            del is_highlighted[0][i]
     except Exception as e:
         return f"Error clearing point: {e}"
     
@@ -143,7 +151,7 @@ def add_line(command):
         line = Line(Point(int(x1), int(y1)), Point(int(x2), int(y2)))
         # Add line to lines and False to is_highlighted.
         lines.append(line)
-        is_highlighted.append(False)
+        is_highlighted[1].append(False)
     except Exception as e:
         return f"Error adding line: {e}"
     
@@ -159,7 +167,7 @@ def remove_line(command):
         index = lines.index(line)
         # Remove the line from the lines and is_highlighted array.
         del lines[index]
-        del is_highlighted[index]
+        del is_highlighted[1][index]
     except Exception as e:
         return f"Error removing line: {e}"
     
@@ -170,7 +178,7 @@ def clear_lines():
         # Remove each line in lines.
         for i in range(len(lines)-1, -1, -1):
             del lines[i]
-            del is_highlighted[i]
+            del is_highlighted[1][i]
     except Exception as e:
         return f"Error clearing lines: {e}"
     
@@ -187,9 +195,11 @@ def closest_pair():
         min_distance, best_pair = closest_pair_finder.closest_util(
             np_points)
         
-        # Generate best_pair as circles to display as red
-        circles.append(Circle(Point(best_pair[0].coords[0], best_pair[0].coords[1]), 3))
-        circles.append(Circle(Point(best_pair[1].coords[0], best_pair[1].coords[1]), 3))
+        # Highlight the closest pair of points
+        for i in range(len(points)):
+            if points[i] in best_pair:
+                is_highlighted[0][i] = True
+        
     except Exception as e:
         return f"Error finding closest pair of points: {e}"
     
@@ -217,7 +227,7 @@ def convex_hull():
             line = Line(Point(hull[i][0], hull[i][1]),
                         Point(hull[i+1][0], hull[i+1][1]))
             lines.append(line)
-            is_highlighted.append(False)
+            is_highlighted[1].append(False)
     except Exception as e:
         return f"Error finding convex hull: {e}"
 
@@ -260,13 +270,12 @@ def line_segment():
         for i in range(len(line_pairs)):
             if results[i]:
                 for j in range(len(lines)):
-                    if lines[j] == line_pairs[i][0] \
-                    or lines[j] == line_pairs[i][1]:
-                        is_highlighted[j] = True
+                    if lines[j] in line_pairs[i]:
+                        is_highlighted[1][j] = True
 
         # Get number of intersections
         intersect_count = 0
-        for highlight in is_highlighted:
+        for highlight in is_highlighted[1]:
             if highlight:
                 intersect_count += 1
     except Exception as e:
@@ -293,6 +302,7 @@ def data_into_json():
     point_data = {
         "x": [int(point.coords[0]) for point in points],
         "y": [int(point.coords[1]) for point in points],
+        "is_highlighted": is_highlighted[0],
     }
 
     line_data = {
@@ -300,7 +310,7 @@ def data_into_json():
         "start_y": [int(line.start.coords[1]) for line in lines],
         "end_x": [int(line.end.coords[0]) for line in lines],
         "end_y": [int(line.end.coords[1]) for line in lines],
-        "is_highlighted": is_highlighted,
+        "is_highlighted": is_highlighted[1],
     }
 
     circle_data = {

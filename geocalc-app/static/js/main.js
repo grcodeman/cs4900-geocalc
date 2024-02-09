@@ -33,10 +33,10 @@ function draw_canvas(points, lines, circles, grid_size) {
     var start_y_arr = lines.start_y;
     var end_x_arr = lines.end_x;
     var end_y_arr = lines.end_y;
-    var is_highlighted_arr = lines.is_highlighted;
+    var highlighted_lines_arr = lines.is_highlighted;
     
     for (let i = 0; i < start_x_arr.length; i++) {
-        if (is_highlighted_arr[i]) {
+        if (highlighted_lines_arr[i]) {
             ctx.strokeStyle = "red";
         }
         else {
@@ -48,19 +48,6 @@ function draw_canvas(points, lines, circles, grid_size) {
         ctx.stroke();
     }
 
-    // Draw points
-    var x_arr = points.x;
-    var y_arr = points.y;
-
-
-
-    ctx.fillStyle = "blue";
-    for (let i = 0; i < x_arr.length; i++) {
-        ctx.beginPath();
-        ctx.ellipse(x_arr[i] * d, 500 - (y_arr[i] * d), 3, 3, 0, 0, Math.PI * 2);
-        ctx.fill();
-    }
-
     // Draw circles
     var center_x_arr = circles.x;
     var center_y_arr = circles.y;
@@ -70,6 +57,24 @@ function draw_canvas(points, lines, circles, grid_size) {
     for (let i = 0; i < center_x_arr.length; i++) {
         ctx.beginPath();
         ctx.ellipse(center_x_arr[i] * d, 500 - (center_y_arr[i] * d), radius_arr[i] * d, radius_arr[i] * d, 0, 0, Math.PI * 2);
+        ctx.fill();
+    }
+
+    // Draw points
+    var x_arr = points.x;
+    var y_arr = points.y;
+    var highlighted_points_arr = points.is_highlighted;
+
+    ctx.fillStyle = "blue";
+    for (let i = 0; i < x_arr.length; i++) {
+        if (highlighted_points_arr[i]) {
+            ctx.fillStyle = "red";
+        }
+        else {
+            ctx.fillStyle = "blue";
+        }
+        ctx.beginPath();
+        ctx.ellipse(x_arr[i] * d, 500 - (y_arr[i] * d), 3, 3, 0, 0, Math.PI * 2);
         ctx.fill();
     }
 }
