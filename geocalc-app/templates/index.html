@@ -22,12 +22,14 @@
             var points = func({{ point_data|tojson }});
             var lines = func({{ line_data|tojson }});
             var circles = func({{ circle_data|tojson }});
+            var grid_size = func({{ grid_size|tojson }})
             console.log(points);
             console.log(lines);
             console.log(circles);
+            console.log(grid_size)
 
             // Display 2d plane with given data
-            draw_canvas(points, lines, circles);
+            draw_canvas(points, lines, circles, grid_size);
         </script>
     </body>
 </html>

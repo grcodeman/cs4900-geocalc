@@ -39,6 +39,7 @@ lines = []
 circles = []
 is_highlighted = []  # Keeps track of if lines should be highlighted
 
+grid_size = 10
 
 # Main Index Page
 @app.route('/', methods=['POST', "GET"])
@@ -87,12 +88,12 @@ def index():
         return render_template('index.html', point_data=point_data,
                                line_data=line_data,
                                circle_data=circle_data,
-                               msg=msg)
+                               msg=msg, grid_size=grid_size)
     else:
         return render_template('index.html', point_data=point_data,
                                line_data=line_data,
                                circle_data=circle_data,
-                               msg=msg)
+                               msg=msg, grid_size=grid_size)
 
 def add_point(command):
     try:
@@ -271,15 +272,6 @@ def line_segment():
 
     return f"{intersect_count} lines intersect."
 
-# Function returns x random points
-def random_points(x):
-    # Create x random points
-    points = []
-    for _ in range(x):
-        point = Point(random.randint(10, 490), random.randint(10, 490))
-        points.append(point)
-
-    return points
 
 # Function turns given point, line, and circle data into json format
 def data_into_json():
