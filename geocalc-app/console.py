@@ -153,6 +153,15 @@ class Console:
                     self.handle_largest_circle(command)
                 elif command.startswith("line_segment"):
                     self.handle_line_segment(command)
+                elif command.startswith("help"):
+                    print("Add a point or line:\n\tadd_point x y |"
+                          + " add_line x1 y1 x2 y2\n"
+                          + "Remove a point or line:\n\tremove_point x y |"
+                          + " remove_line x1 y1 x2 y2\n"
+                          + "Clear all points or lines:\n\tclear_points | "
+                          + "clear_lines\n"
+                          + "Algorithms:\n\tclosest_pair_of_points | convex_hull"
+                          + " | largest_empty_circle | line_segment")
                 else:
                     # Print user error in yellow.
                     print("\033[93m" + "Unknown command." + "\033[0m")
