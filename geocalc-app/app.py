@@ -91,8 +91,8 @@ def index():
             msg = [convex_hull()]
         elif command.startswith('largest_empty_circle'):
             msg = [largest_circle()]
-        elif command.startswith('line_intersections'):
-            msg = [line_intersections()]
+        elif command.startswith('line_segment'):
+            msg = [line_segment()]
         elif command.startswith('set_grid'):
             msg = [set_grid(command)]
         elif command.startswith('help'):
@@ -100,11 +100,11 @@ def index():
             msg = ["Add a point or line: add_point x y |"
                    + " add_line x1 y1 x2 y2",
                    "Remove a point or line: remove_point x y |"
-                   + " remove_point x1 y1 x2 y2",
-                   "Clear all points or lines: clear_points | clear lines",
+                   + " remove_line x1 y1 x2 y2",
+                   "Clear all points or lines: clear_points | clear_lines",
                    "Algorithms: closest_pair_of_points | convex_hull | "
                    + "largest_empty_circle | "
-                   + "line_intersections",
+                   + "line_segment",
                    "Change grid size: set_grid d"]
         else:
             msg = ["Invalid Command."]
@@ -314,7 +314,7 @@ def largest_circle():
            + f" {center} and radius of {radius:.3f}."
 
 
-def line_intersections():
+def line_segment():
     """
     Function performs the line segment intersection algorithm on all
     lines and highlights all intersecting lines.
