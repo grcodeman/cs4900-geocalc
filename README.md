@@ -26,17 +26,13 @@ Intall requirements.txt (pip install -r requirements.txt)
 **app.py** is a frontend program that launches a flask web application where the user can
 enter commands which will display on a graph. The user can add/remove points and lines,
 perform algorithms, and change the displayed graph grid size.
-
-    Command to run app.py in terminal: python app.py | python3 app.py
-
-    Development server on 'http://localhost:5000/' or 'http://127.0.0.1:5000'.
+- Command to run app.py in terminal: python app.py | python3 app.py
+- Development server on 'http://localhost:5000/' or 'http://127.0.0.1:5000'.
 
 **console.py** launches a command line user interface where the user
 can add/remove points and lines and perform algorithms.
-
-    Command to run console.py in terminal: python console.py | python3 console.py
-
-    Enter 'help' while running program to display commands.
+- Command to run console.py in terminal: python console.py | python3 console.py
+- Enter 'help' while running program to display commands.
 
 ## Authors (alphabetically)
 [Ahmed Alabkri](https://github.com/AhmedAlabkri)  
