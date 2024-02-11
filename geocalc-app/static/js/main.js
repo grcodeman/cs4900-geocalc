@@ -55,8 +55,12 @@ function draw_canvas(points, lines, circles, grid_size) {
 
     ctx.fillStyle = "red";
     for (let i = 0; i < center_x_arr.length; i++) {
+        // Calculate adjusted x, y, and radius values
+        var x = center_x_arr[i] * d;
+        var y = 500 - (center_y_arr[i] * d);
+        var radius = radius_arr[i] * d;
         ctx.beginPath();
-        ctx.ellipse(center_x_arr[i] * d, 500 - (center_y_arr[i] * d), radius_arr[i] * d, radius_arr[i] * d, 0, 0, Math.PI * 2);
+        ctx.ellipse(x, y, radius, radius, 0, 0, Math.PI * 2);
         ctx.fill();
     }
 

@@ -5,14 +5,19 @@
     </head>
     <body>
         <center>
-            <canvas id="canvas" width="500" height="500" style="border:1px solid black"></canvas>
+            <!-- Create 500 x 500 canvas -->
+            <canvas id="canvas" width="500" height="500" style="border:1px solid #8b4513"></canvas>
 
+            <!-- Create command input form -->
             <form action="{{ url_for('index') }}" method="post">
                 <p></p>
                 <label for="command">Enter a command: </label>
                 <input type="text" id="command" name="command">
                 <input type="submit" name="submit" id="submit" value="Submit">
             </form>
+            <br>
+
+            <!-- Display output from input command -->
             {% for line in msg %}
                 <h5>{{ line }}</h5>
             {% endfor %}
@@ -25,10 +30,6 @@
             var lines = func({{ line_data|tojson }});
             var circles = func({{ circle_data|tojson }});
             var grid_size = func({{ grid_size|tojson }})
-            console.log(points);
-            console.log(lines);
-            console.log(circles);
-            console.log(grid_size)
 
             // Display 2d plane with given data
             draw_canvas(points, lines, circles, grid_size);

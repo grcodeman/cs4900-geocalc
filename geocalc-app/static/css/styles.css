@@ -3,6 +3,13 @@ body {
     background-color: #f0f0f0;
 }
 
+/* Style h5 elements */
+h5 {
+    font-size: 16px;
+    margin: 10px 2px;
+    font-family: "Lucida Console", "Courier New", monospace;
+}
+
 /* Style the submit button */
 input[type="submit"] {
     background-color: #007bff;
@@ -15,16 +22,6 @@ input[type="submit"] {
     font-size: 16px;
     margin: 4px 2px;
     cursor: pointer;
-}
-
-/* Style the number input to match the select field */
-input[type="number"] {
-    border: 1px solid #ccc;
-    padding: 5px 10px;
-    border-radius: 4px;
-    background-color: white;
-    font-size: 16px;
-    margin: 4px 2px;
 }
 
 /* Style the text input */
@@ -48,5 +45,4 @@ select {
 /* Style the canvas element */
 canvas {
     background-color: white;
-    border: 2px solid #8b4513;
 }
