@@ -1,3 +1,10 @@
+"""
+Program launches a flask webserver running at 'http://127.0.0.1:5000'
+or 'http://localhost:5000/' where the user can enter commands to 
+add/remove/clear points and lines, run algorithms,
+and resize the displayed grid.
+"""
+
 # Standard library imports.
 import os
 import sys
