@@ -11,7 +11,6 @@ function draw_canvas(points, lines, circles, grid_size) {
 
     // Calculate the length of 1 unit (d) based on grid_size
     var d = 500 / grid_size;
-    console.log(d);
 
     // Draw Grid
     ctx.strokeStyle = "#c6c6ec";
@@ -20,8 +19,7 @@ function draw_canvas(points, lines, circles, grid_size) {
         ctx.moveTo(0, d + (d * i));
         ctx.lineTo(500, d + (d * i));
         ctx.stroke();
-    }
-    for (let i = 0; i < grid_size-1; i++) {
+
         ctx.beginPath();
         ctx.moveTo(d + (d * i), 0);
         ctx.lineTo(d + (d * i), 500);
