@@ -1,4 +1,4 @@
-# geocalc - Geometric Computations Package
+# CS4900 Project: geocalc - Geometric Computations Package
 
 ## Overview
 This repository serves as a workspace for geocalc.
